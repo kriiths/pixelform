@@ -21,18 +21,6 @@ export default function Home() {
         >
           {texts.home.cta.shop}
         </Link>
-        <Link
-          href="/shop/junior"
-          className="bg-pink-500 text-white px-8 py-3 rounded hover:bg-pink-600 transition text-lg font-medium"
-        >
-          {texts.nav.junior}
-        </Link>
-        <Link
-          href="/about"
-          className="border-2 border-neutral-900 text-neutral-900 px-8 py-3 rounded hover:bg-neutral-100 transition text-lg font-medium"
-        >
-          {texts.home.cta.about}
-        </Link>
       </div>
 
       {/* Product Categories Preview */}

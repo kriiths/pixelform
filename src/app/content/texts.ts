@@ -1,3 +1,4 @@
+
 export const texts = {
   site: {
     name: "Pixelverk",
@@ -32,6 +33,7 @@ export const texts = {
     categories: {
       pixelparla: "Pixel & Pärla",
       resin: "Resin & Natur",
+      junior: "Pixelverk Junior",
     },
     noProducts: "Inga produkter hittades",
   },
@@ -73,7 +75,7 @@ export const texts = {
   home: {
     hero: {
       title: "Pixelverk",
-      tagline: "Som lagom fast tvärtom",
+      tagline: "När lagom inte räcker till",
       description: "Handgjorda smycken med lekfull nostalgi och naturinspiration. Här hittar du retro-pärlplatte-örhängen och resin-smycken inspirerade av hav, blad och blomformer.",
     },
     cta: {
@@ -98,5 +100,15 @@ export const texts = {
   junior: {
     title: "Pixelverk Junior",
     description: "Här hittar du små pärlfigurer inspirerade av Tetris och andra färgglada minnen. Skapade med fantasi och glädje.",
+  },
+  footer: {
+    contact: "Kontakt",
+    openingHours: "Öppettider:",
+    weekdays: "Vardagar",
+    weekends: "Helger",
+    quickLinks: "Snabblänkar",
+    social: "Följ oss",
+    faq: "Vanliga frågor",
+    rightsReserved: "Alla rättigheter förbehållna.",
   },
 };

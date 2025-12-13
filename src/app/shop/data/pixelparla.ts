@@ -1,10 +1,4 @@
-export interface Product {
-  id: number;
-  name: string;
-  desc: string;
-  price: string;
-  image: string;
-}
+import type { Product } from './types';
 
 export const pixelparla: Product[] = [
   {

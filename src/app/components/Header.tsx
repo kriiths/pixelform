@@ -21,9 +21,7 @@ export default function Header() {
           <Link href="/shop" className="text-neutral-700 hover:text-neutral-900 transition">
             {texts.nav.shop}
           </Link>
-          <Link href="/shop/junior" className="text-pink-600 hover:text-pink-700 transition">
-            {texts.nav.junior}
-          </Link>
+          {/* Junior link removed */}
           <Link href="/about" className="text-neutral-700 hover:text-neutral-900 transition">
             {texts.nav.about}
           </Link>
@@ -63,13 +61,6 @@ export default function Header() {
               className="text-neutral-700 hover:text-neutral-900 transition"
             >
               {texts.nav.shop}
-            </Link>
-            <Link
-              href="/shop/junior"
-              onClick={() => setIsMenuOpen(false)}
-              className="text-pink-600 hover:text-pink-700 transition"
-            >
-              {texts.nav.junior}
             </Link>
             <Link
               href="/about"

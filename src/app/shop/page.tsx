@@ -68,6 +68,16 @@ export default function Shop() {
           ))}
         </div>
       </section>
+
+      {/* Junior */}
+      <section>
+        <h2 className="text-2xl font-semibold mb-6 text-neutral-900">{texts.shop.categories.junior || 'Junior'}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {products.junior.map((p) => (
+            <ProductCard key={p.id} {...p} category="junior" />
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
