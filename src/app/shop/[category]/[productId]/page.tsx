@@ -2,10 +2,12 @@
 
 import { products } from '../../data/index';
 import Image from 'next/image';
-import { useCart } from '../../../cart/context';
-import { texts } from '../../../content/texts';
+import { useCart } from '@/app/cart/context';
+import { texts } from '@/app/content/texts';
 import { use, useState } from 'react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
+import { CATEGORY_ACCENT, type Category } from '@/lib/types';
 
 interface Props {
   params: Promise<{ category: string; productId: string }>;
@@ -51,9 +53,9 @@ export default function ProductPage({ params }: Props) {
   const handlePrev = () => setImgIdx((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-neutral-50 rounded-lg p-8 flex flex-col items-center justify-center">
+    <main className="max-w-4xl mx-auto px-4 py-16 bg-offwhite min-h-[80vh]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        <div className="bg-white rounded-xl border border-gray-light p-10 flex flex-col items-center justify-center shadow-subtle">
           <div className="relative w-full flex items-center justify-center">
             <button
               onClick={handlePrev}
@@ -68,7 +70,7 @@ export default function ProductPage({ params }: Props) {
               alt={product.name}
               width={400}
               height={400}
-              className="object-contain rounded"
+              className="object-contain rounded-xl"
             />
             <button
               onClick={handleNext}
@@ -85,7 +87,7 @@ export default function ProductPage({ params }: Props) {
                 <button
                   key={img}
                   onClick={() => setImgIdx(idx)}
-                  className={`w-3 h-3 rounded-full border ${imgIdx === idx ? 'bg-neutral-900' : 'bg-neutral-300'}`}
+                  className={`w-3 h-3 rounded-full border ${imgIdx === idx ? 'bg-black' : 'bg-gray-light'}`}
                   aria-label={`${texts.product.selectImage} ${idx + 1}`}
                 />
               ))}
@@ -93,18 +95,20 @@ export default function ProductPage({ params }: Props) {
           )}
         </div>
 
-        <div className="flex flex-col">
-          <h1 className="text-3xl font-semibold mb-4 text-neutral-900">{product.name}</h1>
-          <p className="text-2xl font-medium mb-6 text-neutral-900">{product.price}</p>
-          <p className="text-neutral-700 mb-8">{product.desc}</p>
-          <button
+        <div className="flex flex-col items-start bg-offwhite p-0 md:p-4 rounded-xl">
+          <h1 className="text-4xl font-extrabold mb-4 text-black leading-tight">{product.name}</h1>
+          <p className="text-xl font-semibold mb-6 text-gray">{product.price}</p>
+          <p className="text-gray-700 mb-10 text-lg leading-relaxed">{product.description}</p>
+          <Button
             onClick={handleAddToCart}
-            className="bg-neutral-900 text-white px-8 py-3 rounded hover:bg-neutral-700 transition w-full md:w-auto"
+            variant="accent"
+            accentColor={CATEGORY_ACCENT[category as Category]}
+            className="px-8 py-4 text-lg"
           >
             {texts.product.addToCart}
-          </button>
-          <Link href="/shop" className="mt-6 text-blue-600 hover:underline text-sm">
-            ← {texts.product.backToShop}
+          </Button>
+          <Link href="/shop" className="mt-8 text-resin hover:underline text-base font-medium">
+            {texts.product.backArrow} {texts.product.backToShop}
           </Link>
         </div>
       </div>

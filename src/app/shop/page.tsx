@@ -2,31 +2,29 @@
 
 import { useState } from 'react';
 import { products } from './data/index';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '@/components/product/ProductCard';
 import { texts } from '../content/texts';
+import type { Product } from '@/lib/types';
 
 export default function Shop() {
   const [sortBy, setSortBy] = useState<string>('newest');
 
-  const allProducts = [
-    ...products.pixelparla.map(p => ({ ...p, category: 'pixelparla' })),
-    ...products.resin.map(p => ({ ...p, category: 'resin' })),
-  ];
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const sortedProducts = [...allProducts].sort((a, b) => {
-    switch (sortBy) {
-      case 'priceLow':
-        return parseInt(a.price.replace(/\D/g, ''), 10) - parseInt(b.price.replace(/\D/g, ''), 10);
-      case 'priceHigh':
-        return parseInt(b.price.replace(/\D/g, ''), 10) - parseInt(a.price.replace(/\D/g, ''), 10);
-      case 'name':
-        return a.name.localeCompare(b.name, 'sv');
-      case 'newest':
-      default:
-        return 0;
-    }
-  });
+  // Sort helper
+  const sortProducts = (products: Product[]) => {
+    return [...products].sort((a, b) => {
+      switch (sortBy) {
+        case 'priceLow':
+          return parseInt(a.price.replace(/\D/g, ''), 10) - parseInt(b.price.replace(/\D/g, ''), 10);
+        case 'priceHigh':
+          return parseInt(b.price.replace(/\D/g, ''), 10) - parseInt(a.price.replace(/\D/g, ''), 10);
+        case 'name':
+          return a.name.localeCompare(b.name, 'sv');
+        case 'newest':
+        default:
+          return 0;
+      }
+    });
+  };
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-12">
@@ -53,17 +51,17 @@ export default function Shop() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6 text-neutral-900">{texts.shop.categories.pixelparla}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.pixelparla.map((p) => (
+          {sortProducts(products.pixelparla).map((p) => (
             <ProductCard key={p.id} {...p} category="pixelparla" />
           ))}
         </div>
       </section>
 
       {/* Resin & Natur */}
-      <section>
+      <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6 text-neutral-900">{texts.shop.categories.resin}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.resin.map((p) => (
+          {sortProducts(products.resin).map((p) => (
             <ProductCard key={p.id} {...p} category="resin" />
           ))}
         </div>
@@ -73,7 +71,7 @@ export default function Shop() {
       <section>
         <h2 className="text-2xl font-semibold mb-6 text-neutral-900">{texts.shop.categories.junior || 'Junior'}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.junior.map((p) => (
+          {sortProducts(products.junior).map((p) => (
             <ProductCard key={p.id} {...p} category="junior" />
           ))}
         </div>

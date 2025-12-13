@@ -1,8 +1,8 @@
 "use client";
 
 import Link from 'next/link';
-import { useCart } from '../cart/context';
-import { texts } from '../content/texts';
+import { useCart } from '@/app/cart/context';
+import { texts } from '@/app/content/texts';
 import { useState } from 'react';
 
 export default function Header() {
@@ -23,9 +23,11 @@ export default function Header() {
               {texts.nav.shop}
               <svg className="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
-            <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-light rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-150 z-20">
-              <Link href="/shop" className="block px-4 py-2 text-gray-700 hover:bg-gray-light hover:text-black transition rounded-t">{texts.nav.shop}</Link>
-              <Link href="/shop/junior" className="block px-4 py-2 text-pixel hover:bg-pixel/10 hover:text-pixel transition">{texts.nav.junior}</Link>
+            <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-light rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-20">
+              <Link href="/shop" className="block px-4 py-2 text-black font-semibold hover:bg-gray-light hover:text-black transition rounded-t">Visa alla</Link>
+              <Link href="/shop/pixelparla" className="block px-4 py-2 text-pixel hover:bg-pixel/10 hover:text-pixel transition">{texts.shop.categories.pixelparla}</Link>
+              <Link href="/shop/resin" className="block px-4 py-2 text-resin hover:bg-resin/10 hover:text-resin transition">{texts.shop.categories.resin}</Link>
+              <Link href="/shop/junior" className="block px-4 py-2 text-black hover:bg-gray-light hover:text-black transition rounded-b">{texts.shop.categories.junior}</Link>
             </div>
           </div>
           <Link href="/about" className="text-gray-700 hover:text-black transition px-2 py-1 rounded">

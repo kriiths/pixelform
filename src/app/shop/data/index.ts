@@ -8,4 +8,4 @@ export const products = {
   junior,
 };
 
-export type { Product } from './types';
+export type { Product } from '@/lib/types';

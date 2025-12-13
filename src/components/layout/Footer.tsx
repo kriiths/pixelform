@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { contact } from '../content/contact';
-import { faqs } from '../content/faqs';
-import { texts } from '../content/texts';
+import { contact } from '@/app/content/contact';
+import { faqs } from '@/app/content/faqs';
+import { texts } from '@/app/content/texts';
 
 export default function Footer() {
   return (

@@ -43,6 +43,7 @@ export const texts = {
     price: "Pris",
     description: "Beskrivning",
     backToShop: "Tillbaka till shoppen",
+    backArrow: "←",
     prevImage: "Föregående bild",
     nextImage: "Nästa bild",
     prevArrow: "←",
