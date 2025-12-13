@@ -3,5 +3,6 @@ export type Product = {
   name: string;
   desc: string;
   price: string;
-  image: string;
+  image: string; // main image (for backward compatibility)
+  images?: string[]; // optional array of images
 };

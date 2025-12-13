@@ -43,6 +43,11 @@ export const texts = {
     price: "Pris",
     description: "Beskrivning",
     backToShop: "Tillbaka till shoppen",
+    prevImage: "Föregående bild",
+    nextImage: "Nästa bild",
+    prevArrow: "←",
+    nextArrow: "→",
+    selectImage: "Välj bild",
   },
   cart: {
     title: "Din kundvagn",
