@@ -1,0 +1,102 @@
+export const texts = {
+  site: {
+    name: "Pixelverk",
+    tagline: "Som lagom fast tvärtom",
+    description: "Handgjorda smycken med lekfull nostalgi, havskänsla och stilla silver. Skapade i liten skala – ibland färgglatt, ibland avskalat.",
+  },
+  forms: {
+    name: "Namn",
+    email: "E-post",
+    address: "Adress",
+    namePlaceholder: "För- och efternamn",
+    emailPlaceholder: "din@epost.se",
+    addressPlaceholder: "Gatuadress",
+  },
+  nav: {
+    home: "Hem",
+    shop: "Shop",
+    about: "Om Pixelverk",
+    cart: "Kundvagn",
+    checkout: "Kassa",
+    junior: "Pixelverk Junior",
+  },
+  shop: {
+    title: "Shop",
+    sortBy: "Sortera efter:",
+    sortOptions: {
+      newest: "Nyast först",
+      priceLow: "Lägsta pris",
+      priceHigh: "Högsta pris",
+      name: "Namn A-Ö",
+    },
+    categories: {
+      pixelparla: "Pixel & Pärla",
+      resin: "Resin & Natur",
+    },
+    noProducts: "Inga produkter hittades",
+  },
+  product: {
+    notFound: "Produkten hittades inte",
+    addToCart: "Lägg i kundvagn",
+    price: "Pris",
+    description: "Beskrivning",
+    backToShop: "Tillbaka till shoppen",
+  },
+  cart: {
+    title: "Din kundvagn",
+    empty: "Din kundvagn är tom",
+    continueShopping: "Fortsätt handla",
+    goToCheckout: "Gå till kassan",
+    total: "Totalt",
+    quantity: "Antal",
+    remove: "Ta bort",
+    itemsInCart: "produkter i kundvagnen",
+  },
+  checkout: {
+    title: "Kassa",
+    payment: "Betalning",
+    mockPayment: "Detta är en demo-checkout",
+    completeOrder: "Slutför köp",
+    thankYou: "Tack för din beställning!",
+    orderSummary: "Ordersammanfattning",
+    orderNumber: "Ordernummer",
+    backToShop: "Tillbaka till shoppen",
+    confirmationSent: "En bekräftelse har skickats till din e-post.",
+  },
+  buttons: {
+    addToCart: "Lägg i kundvagn",
+    shopNow: "Shoppa nu",
+    learnMore: "Läs mer",
+    contact: "Kontakta oss",
+    submit: "Skicka",
+  },
+  home: {
+    hero: {
+      title: "Pixelverk",
+      tagline: "Som lagom fast tvärtom",
+      description: "Handgjorda smycken med lekfull nostalgi och naturinspiration. Här hittar du retro-pärlplatte-örhängen och resin-smycken inspirerade av hav, blad och blomformer.",
+    },
+    cta: {
+      shop: "Shoppa nu",
+      about: "Om Pixelverk",
+    },
+    categories: {
+      pixelparlaDesc: "Retro-pärlplatte med 80/90-tals nostalgi",
+      resinDesc: "Hav, blad och blomformer i resin",
+    },
+    news: {
+      title: "Nyheter & Kampanjer",
+      description: "Håll utkik här för kommande kampanjer och nya produkter!",
+      link: "Se alla produkter →",
+    },
+  },
+  about: {
+    title: "Om Pixelverk",
+    intro: "Pixelverk är mitt sätt att skapa utan att välja en enda stil. Inspirerad av 80- och 90-talets färger, havets lugn och klassiska silverformer gör jag smycken som får vara lite för mycket – eller precis lagom, fast tvärtom.",
+    details: "Allt skapas för hand, i liten skala, med tid och omsorg.",
+  },
+  junior: {
+    title: "Pixelverk Junior",
+    description: "Här hittar du små pärlfigurer inspirerade av Tetris och andra färgglada minnen. Skapade med fantasi och glädje.",
+  },
+};
