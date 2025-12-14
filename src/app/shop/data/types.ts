@@ -5,4 +5,5 @@ export type Product = {
   price: string;
   image: string; // main image (for backward compatibility)
   images?: string[]; // optional array of images
+  stock: number;
 };

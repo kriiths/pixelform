@@ -72,13 +72,13 @@ export default function CheckoutPage() {
                   <p className="text-sm text-neutral-600">Antal: {item.quantity}</p>
                 </div>
                 <p className="font-medium text-neutral-900">
-                  {parseInt(item.price.replace(/\D/g, ''), 10) * item.quantity} kr
+                  {parseInt(item.price.replace(/\D/g, ''), 10) * item.quantity}{texts.currency.suffix}
                 </p>
               </div>
             ))}
             <div className="flex justify-between items-center mt-4 pt-4 border-t border-neutral-300">
               <span className="text-lg font-semibold text-neutral-900">{texts.cart.total}:</span>
-              <span className="text-2xl font-bold text-neutral-900">{totalPrice} kr</span>
+              <span className="text-2xl font-bold text-neutral-900">{totalPrice}{texts.currency.suffix}</span>
             </div>
           </div>
         </div>

@@ -15,7 +15,8 @@ interface Props {
 
 export default function ProductPage({ params }: Props) {
   const { category, productId } = use(params);
-  const { addItem } = useCart();
+  const { addItem, removeItem, items } = useCart();
+
 
   // Image gallery state (must be before any early return)
   const [imgIdx, setImgIdx] = useState<number>(0);
@@ -33,6 +34,10 @@ export default function ProductPage({ params }: Props) {
       </main>
     );
   }
+
+  // Find this product in cart (after product is confirmed)
+  const cartItem = items.find((item) => item.id === product.id && item.category === category);
+  const cartQty = cartItem?.quantity || 0;
 
   const images: string[] =
     product.images && product.images.length > 0
@@ -98,12 +103,31 @@ export default function ProductPage({ params }: Props) {
         <div className="flex flex-col items-start bg-offwhite p-0 md:p-4 rounded-xl">
           <h1 className="text-4xl font-extrabold mb-4 text-black leading-tight">{product.name}</h1>
           <p className="text-xl font-semibold mb-6 text-gray">{product.price}</p>
-          <p className="text-gray-700 mb-10 text-lg leading-relaxed">{product.description}</p>
+          <p className="text-gray-700 mb-4 text-lg leading-relaxed">{product.description}</p>
+          {/* Lagerstatus */}
+          <p className={`text-base font-medium mb-6 ${product.stock === 0 ? 'text-red-600' : 'text-green-700'}`}>
+            {product.stock === 0 ? texts.product.outOfStock : `${texts.product.inStock} ${product.stock}`}
+          </p>
+          {cartQty > 0 && (
+            <div className="flex items-center gap-3 mb-2">
+              <p className="text-base font-medium text-blue-700">
+                {`${texts.product.inCart} ${cartQty}`}
+              </p>
+              <button
+                type="button"
+                className="text-xs px-2 py-1 rounded bg-red-100 text-red-700 border border-red-200 hover:bg-red-200 transition"
+                onClick={() => removeItem(product.id, category)}
+              >
+                {texts.product.removeFromCart}
+              </button>
+            </div>
+          )}
           <Button
             onClick={handleAddToCart}
             variant="accent"
             accentColor={CATEGORY_ACCENT[category as Category]}
-            className="px-8 py-4 text-lg"
+            className={`px-8 py-4 text-lg ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={product.stock === 0}
           >
             {texts.product.addToCart}
           </Button>

@@ -5,6 +5,9 @@ export const texts = {
     tagline: "Som lagom fast tvärtom",
     description: "Handgjorda smycken med lekfull nostalgi, havskänsla och stilla silver. Skapade i liten skala – ibland färgglatt, ibland avskalat.",
   },
+  currency: {
+    suffix: " kr",
+  },
   forms: {
     name: "Namn",
     email: "E-post",
@@ -20,6 +23,8 @@ export const texts = {
     cart: "Kundvagn",
     checkout: "Kassa",
     junior: "Pixelverk Junior",
+    toggleMenu: "Växla meny",
+    showAll: "Visa alla",
   },
   shop: {
     title: "Shop",
@@ -49,6 +54,11 @@ export const texts = {
     prevArrow: "←",
     nextArrow: "→",
     selectImage: "Välj bild",
+    inStock: "I lager: ",
+    outOfStock: "Slut i lager",
+    inCart: "I din varukorg: ",
+    removeFromCart: "Ta bort från kundvagn",
+    maxStockReached: "Max antal i lager",
   },
   cart: {
     title: "Din kundvagn",
@@ -59,6 +69,8 @@ export const texts = {
     quantity: "Antal",
     remove: "Ta bort",
     itemsInCart: "produkter i kundvagnen",
+    decreaseQuantity: "Minska antal",
+    increaseQuantity: "Öka antal",
   },
   checkout: {
     title: "Kassa",

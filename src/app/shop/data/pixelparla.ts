@@ -11,7 +11,8 @@ export const pixelparla: Product[] = [
       "/images/pixelparla/retro1.jpg",
       "/images/pixelparla/retro1b.jpg",
       "/images/pixelparla/retro1c.jpg"
-    ]
+    ],
+    stock: 3,
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const pixelparla: Product[] = [
     description: "Färgglatt pixelmotiv",
     price: "470 kr",
     image: "/images/pixelparla/retro2.jpg",
+    stock: 0,
   },
   {
     id: 3,
@@ -26,5 +28,6 @@ export const pixelparla: Product[] = [
     description: "Lekfullt pärlplatta",
     price: "430 kr",
     image: "/images/pixelparla/retro3.jpg",
+    stock: 5,
   },
 ];

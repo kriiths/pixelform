@@ -36,7 +36,7 @@ export default function CartPage() {
       <div className="bg-neutral-50 rounded-lg p-6 border border-neutral-200">
         <div className="flex justify-between items-center mb-6">
           <span className="text-xl font-semibold text-neutral-900">{texts.cart.total}:</span>
-          <span className="text-2xl font-bold text-neutral-900">{totalPrice} kr</span>
+          <span className="text-2xl font-bold text-neutral-900">{totalPrice}{texts.currency.suffix}</span>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">

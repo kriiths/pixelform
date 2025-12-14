@@ -5,6 +5,7 @@ export type Product = {
   price: string;
   image: string;
   images?: string[];
+  stock: number;
 };
 
 export type CartItem = {

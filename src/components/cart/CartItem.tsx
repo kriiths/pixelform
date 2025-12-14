@@ -2,8 +2,10 @@
 
 import Image from 'next/image';
 import { useCart } from '@/app/cart/context';
+import { products } from '@/app/shop/data/index';
 import { texts } from '@/app/content/texts';
 import type { CartItem as CartItemType } from '@/lib/types';
+import Link from 'next/link';
 
 interface CartItemProps {
   item: CartItemType;
@@ -11,6 +13,10 @@ interface CartItemProps {
 
 export default function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeItem } = useCart();
+  // Look up stock for this item from products data
+  const productList = products[item.category as keyof typeof products];
+  const product = productList?.find((p) => p.id === item.id);
+  const stock = product?.stock ?? 0;
 
   return (
     <div className="flex gap-4 border-b border-neutral-200 pb-4 mb-4">
@@ -25,7 +31,11 @@ export default function CartItem({ item }: CartItemProps) {
       </div>
 
       <div className="flex-1">
-        <h3 className="font-semibold text-neutral-900">{item.name}</h3>
+        <h3 className="font-semibold text-neutral-900">
+          <Link href={`/shop/${item.category}/${item.id}`} className="hover:underline focus:underline">
+            {item.name}
+          </Link>
+        </h3>
         <p className="text-sm text-neutral-600">{item.price}</p>
 
         <div className="flex items-center gap-3 mt-2">
@@ -34,15 +44,17 @@ export default function CartItem({ item }: CartItemProps) {
             <button
               onClick={() => updateQuantity(item.id, item.category, item.quantity - 1)}
               className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100 transition"
-              aria-label="Minska antal"
+              aria-label={texts.cart.decreaseQuantity}
             >
               -
             </button>
             <span className="w-8 text-center">{item.quantity}</span>
             <button
               onClick={() => updateQuantity(item.id, item.category, item.quantity + 1)}
-              className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100 transition"
-              aria-label="Öka antal"
+              className={`w-7 h-7 flex items-center justify-center border border-neutral-300 rounded transition ${item.quantity >= stock ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-100'}`}
+              aria-label={texts.cart.increaseQuantity}
+              disabled={item.quantity >= stock}
+              title={item.quantity >= stock ? texts.product.maxStockReached : undefined}
             >
               +
             </button>
@@ -52,7 +64,7 @@ export default function CartItem({ item }: CartItemProps) {
 
       <div className="flex flex-col items-end justify-between">
         <p className="font-semibold text-neutral-900">
-          {parseInt(item.price.replace(/\D/g, ''), 10) * item.quantity} kr
+          {parseInt(item.price.replace(/\D/g, ''), 10) * item.quantity}{texts.currency.suffix}
         </p>
         <button
           onClick={() => removeItem(item.id, item.category)}
