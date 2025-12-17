@@ -1,42 +1,58 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
+import { texts, paths } from '../src/app/content/texts';
 
 test.describe('Homepage', () => {
   test('should load successfully', async ({ page }) => {
-    await page.goto('/');
-    
     // Check that the main heading is visible
     await expect(page.locator('h1')).toBeVisible();
   });
 
-  test('should display all three category cards', async ({ page }) => {
-    await page.goto('/');
-    
-    // Check for Pixelpärlor category
-    await expect(page.getByRole('link', { name: /pixelpärlor/i })).toBeVisible();
-    
-    // Check for Resin category
-    await expect(page.getByRole('link', { name: /resin/i })).toBeVisible();
-    
-    // Check for Junior category
-    await expect(page.getByRole('link', { name: /junior/i })).toBeVisible();
+  test('should display all category cards from instruction file', async ({ page }) => {
+    const categories = Object.values(texts.shop.categories);
+    for (const category of categories) {
+      await expect(page.getByRole('link', { name: category })).toBeVisible();
+    }
   });
 
-  test('should navigate to shop when clicking category card', async ({ page }) => {
-    await page.goto('/');
-    
-    // Click on Pixelpärlor category
-    await page.getByRole('link', { name: /pixelpärlor/i }).first().click();
-    
-    // Should navigate to pixelparla shop page
-    await expect(page).toHaveURL(/\/shop\/pixelparla/);
+  test('should navigate to shop when clicking first category card', async ({ page }) => {
+    // Click on the first category card (order: pixelparla, resin, junior)
+    const categories = Object.values(texts.shop.categories);
+    const categoryLinks = [paths.pixelParla, paths.resin, paths.junior];
+    await page.getByRole('link', { name: categories[0] }).first().click();
+    await expect(page).toHaveURL(categoryLinks[0]);
   });
 
   test('should have working header navigation', async ({ page }) => {
-    await page.goto('/');
-    
-    // Check header links exist
-    await expect(page.getByRole('link', { name: /shop/i }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /about/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /cart/i })).toBeVisible();
+    // Check header links exist (shop, about, cart)
+    const navLinks = [texts.nav.shop, texts.nav.about, texts.nav.cart];
+    for (const nav of navLinks) {
+      await expect(page.getByRole('link', { name: nav })).toBeVisible();
+    }
+  });
+
+  test('should display the correct page title', async ({ page }) => {
+    await expect(page).toHaveTitle(new RegExp(texts.home.hero.title, 'i'));
+  });
+
+  test('should display the homepage intro text', async ({ page }) => {
+    await expect(page.getByText(texts.home.hero.description, { exact: false })).toBeVisible();
+  });
+
+  test('should have a visible footer', async ({ page }) => {
+    await expect(page.locator('footer')).toBeVisible();
+  });
+
+  test('should not display 404 or error message', async ({ page }) => {
+    await expect(page.locator('text=404')).toHaveCount(0);
+    await expect(page.locator('text=error', { hasText: 'error' })).toHaveCount(0);
+  });
+
+  test('should have accessible category cards', async ({ page }) => {
+    const categories = Object.values(texts.shop.categories);
+    for (const category of categories) {
+      const card = page.getByRole('link', { name: category });
+      await expect(card).toHaveAttribute('tabindex');
+      await expect(card).toBeVisible();
+    }
   });
 });

@@ -135,6 +135,7 @@ export default function ProductPageClient({ product, category }: Props) {
             accentColor={CATEGORY_ACCENT[category as Category]}
             className={`px-8 py-4 text-lg ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
             disabled={product.stock === 0}
+            data-testid={testIds.addToCartPageButton}
           >
             {texts.product.addToCart}
           </Button>

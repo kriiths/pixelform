@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { Product } from './types';
+import type { Product } from '@/lib/types';
 import { texts } from '@/app/content/texts';
 
 const PRODUCTS_DIR = path.join(process.cwd(), 'public', 'products');

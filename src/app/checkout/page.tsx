@@ -64,7 +64,7 @@ export default function CheckoutPage() {
         {/* Ordersammanfattning */}
         <div>
           <h2 className="text-xl font-semibold mb-4 text-neutral-900">{texts.checkout.orderSummary}</h2>
-          <div className="bg-white border border-neutral-200 rounded-lg p-6">
+          <div data-testid="orderSummary" className="bg-white border border-neutral-200 rounded-lg p-6">
             {items.map((item) => (
               <div key={`${item.category}-${item.id}`} className="flex justify-between mb-3 pb-3 border-b border-neutral-100 last:border-0">
                 <div>
@@ -97,6 +97,7 @@ export default function CheckoutPage() {
                   <label className="block text-sm font-medium mb-1">{texts.forms.name}</label>
                   <input
                     type="text"
+                    data-testid="checkoutNameInput"
                     className="w-full border border-neutral-300 rounded px-3 py-2"
                     placeholder={texts.forms.namePlaceholder}
                   />
@@ -105,6 +106,7 @@ export default function CheckoutPage() {
                   <label className="block text-sm font-medium mb-1">{texts.forms.email}</label>
                   <input
                     type="email"
+                    data-testid="checkoutEmailInput"
                     className="w-full border border-neutral-300 rounded px-3 py-2"
                     placeholder={texts.forms.emailPlaceholder}
                   />
@@ -113,6 +115,7 @@ export default function CheckoutPage() {
                   <label className="block text-sm font-medium mb-1">{texts.forms.address}</label>
                   <input
                     type="text"
+                    data-testid="checkoutAddressInput"
                     className="w-full border border-neutral-300 rounded px-3 py-2"
                     placeholder={texts.forms.addressPlaceholder}
                   />
@@ -122,6 +125,7 @@ export default function CheckoutPage() {
 
             <button
               onClick={handleCompleteOrder}
+              data-testid="submitOrderButton"
               className="w-full bg-neutral-900 text-white px-8 py-3 rounded hover:bg-neutral-700 transition font-semibold"
             >
               {texts.checkout.completeOrder}

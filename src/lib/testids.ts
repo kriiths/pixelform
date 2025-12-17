@@ -3,7 +3,8 @@
 export const testIds = {
   // Product components
   productCard: 'productCard',
-  addToCartButton: 'addToCartButton',
+  addToCartCardButton: 'addToCartCardButton',
+  addToCartPageButton: 'addToCartPageButton',
 
   // Cart components
   cartItem: 'cartItem',
@@ -26,6 +27,22 @@ export const testIds = {
 
   // Shop page
   sortSelect: 'sortSelect',
+
+  // Homepage
+  heroTitle: 'heroTitle',
+  heroDescription: 'heroDescription',
+  categoryCard: 'categoryCard',
+  categoryCardPixelparla: 'categoryCardPixelparla',
+  categoryCardResin: 'categoryCardResin',
+  categoryCardJunior: 'categoryCardJunior',
+
+  // Checkout
+  checkoutForm: 'checkoutForm',
+  orderSummary: 'orderSummary',
+  submitOrderButton: 'submitOrderButton',
+  checkoutNameInput: 'checkoutNameInput',
+  checkoutEmailInput: 'checkoutEmailInput',
+  checkoutAddressInput: 'checkoutAddressInput',
 
   // Footer
   footer: 'footer',

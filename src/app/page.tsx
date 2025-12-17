@@ -7,16 +7,16 @@ export default function Home() {
     <main className="max-w-5xl mx-auto px-4 py-20 bg-offwhite min-h-[80vh]">
       {/* Hero Section */}
       <section className="text-center mb-20">
-        <h1 className="text-6xl font-extrabold mb-4 text-black tracking-tight leading-tight">{texts.home.hero.title}</h1>
+        <h1 data-testid="heroTitle" className="text-6xl font-extrabold mb-4 text-black tracking-tight leading-tight">{texts.home.hero.title}</h1>
         <p className="text-2xl italic mb-8 text-gray">{texts.home.hero.tagline}</p>
-        <p className="text-lg leading-relaxed max-w-2xl mx-auto text-gray-700">
+        <p data-testid="heroDescription" className="text-lg leading-relaxed max-w-2xl mx-auto text-gray-700">
           {texts.home.hero.description}
         </p>
       </section>
 
       {/* Product Categories Preview */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-        <Link href="/shop/pixelparla" className="group block">
+        <Link href="/shop/pixelparla" className="group block" data-testid="categoryCardPixelparla">
           <div className="rounded-xl p-8 h-56 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-pixel/10 border border-pixel/20">
             <h2 className="text-2xl font-bold mb-3 text-pixel group-hover:scale-105 transition-transform">
               {texts.shop.categories.pixelparla}
@@ -24,7 +24,7 @@ export default function Home() {
             <p className="text-gray-700 text-center text-sm">{texts.home.categories.pixelparlaDesc}</p>
           </div>
         </Link>
-        <Link href="/shop/resin" className="group block">
+        <Link href="/shop/resin" className="group block" data-testid="categoryCardResin">
           <div className="rounded-xl p-8 h-56 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-resin/10 border border-resin/20">
             <h2 className="text-2xl font-bold mb-3 text-resin group-hover:scale-105 transition-transform">
               {texts.shop.categories.resin}
@@ -32,7 +32,7 @@ export default function Home() {
             <p className="text-gray-700 text-center text-sm">{texts.home.categories.resinDesc}</p>
           </div>
         </Link>
-        <Link href="/shop/junior" className="group block">
+        <Link href="/shop/junior" className="group block" data-testid="categoryCardJunior">
           <div className="rounded-xl p-8 h-56 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-gray-light border border-gray">
             <h2 className="text-2xl font-bold mb-3 text-black group-hover:scale-105 transition-transform">
               {texts.shop.categories.junior}

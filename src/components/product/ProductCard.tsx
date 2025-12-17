@@ -60,7 +60,7 @@ export default function ProductCard({ id, name, description, price, image, categ
               type="button"
               variant="secondary"
               accentColor={accent}
-              data-testid={testIds.addToCartButton}
+              data-testid={testIds.addToCartCardButton}
               aria-label={texts.product.addToCart}
               onClick={handleAddToCart}
               disabled={stock === 0 || atMax}
