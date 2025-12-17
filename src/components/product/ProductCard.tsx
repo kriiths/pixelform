@@ -10,7 +10,7 @@ import { texts } from '@/app/content/texts';
 
 
 interface ProductCardProps {
-  id: number;
+  id: string | number;
   name: string;
   description: string;
   price: string;
@@ -33,7 +33,7 @@ export default function ProductCard({ id, name, description, price, image, categ
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     if (atMax) return;
-    addItem({ id, name, price, image, category });
+    addItem({ id, name, price, image, category }, stock);
     setClicked(true);
     setTimeout(() => setClicked(false), 350);
   };

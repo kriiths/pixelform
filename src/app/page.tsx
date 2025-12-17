@@ -15,21 +15,29 @@ export default function Home() {
       </section>
 
       {/* Product Categories Preview */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20">
-        <Link href="/shop#pixelparla" className="group block">
-          <div className="rounded-xl p-10 h-64 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-pixel/10 border border-pixel/20">
-            <h2 className="text-3xl font-bold mb-3 text-pixel group-hover:scale-105 transition-transform">
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+        <Link href="/shop/pixelparla" className="group block">
+          <div className="rounded-xl p-8 h-56 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-pixel/10 border border-pixel/20">
+            <h2 className="text-2xl font-bold mb-3 text-pixel group-hover:scale-105 transition-transform">
               {texts.shop.categories.pixelparla}
             </h2>
-            <p className="text-gray-700 text-center">{texts.home.categories.pixelparlaDesc}</p>
+            <p className="text-gray-700 text-center text-sm">{texts.home.categories.pixelparlaDesc}</p>
           </div>
         </Link>
-        <Link href="/shop#resin" className="group block">
-          <div className="rounded-xl p-10 h-64 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-resin/10 border border-resin/20">
-            <h2 className="text-3xl font-bold mb-3 text-resin group-hover:scale-105 transition-transform">
+        <Link href="/shop/resin" className="group block">
+          <div className="rounded-xl p-8 h-56 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-resin/10 border border-resin/20">
+            <h2 className="text-2xl font-bold mb-3 text-resin group-hover:scale-105 transition-transform">
               {texts.shop.categories.resin}
             </h2>
-            <p className="text-gray-700 text-center">{texts.home.categories.resinDesc}</p>
+            <p className="text-gray-700 text-center text-sm">{texts.home.categories.resinDesc}</p>
+          </div>
+        </Link>
+        <Link href="/shop/junior" className="group block">
+          <div className="rounded-xl p-8 h-56 flex flex-col items-center justify-center hover:shadow-subtle transition-all bg-gray-light border border-gray">
+            <h2 className="text-2xl font-bold mb-3 text-black group-hover:scale-105 transition-transform">
+              {texts.shop.categories.junior}
+            </h2>
+            <p className="text-gray-700 text-center text-sm">{texts.home.categories.juniorDesc}</p>
           </div>
         </Link>
       </section>

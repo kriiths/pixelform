@@ -34,7 +34,7 @@ export default function ProductPageClient({ product, category }: Props) {
       price: product.price,
       image: product.image,
       category,
-    });
+    }, product.stock);
   };
 
   const handleNext = () => setImgIdx((prev) => (prev + 1) % images.length);

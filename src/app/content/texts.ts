@@ -103,6 +103,7 @@ export const texts = {
     categories: {
       pixelparlaDesc: "Retro-pärlplatte med 80/90-tals nostalgi",
       resinDesc: "Hav, blad och blomformer i resin",
+      juniorDesc: "Färgglada pärlfigurer för små händer",
     },
     news: {
       title: "Nyheter & Kampanjer",
@@ -118,6 +119,11 @@ export const texts = {
   junior: {
     title: "Pixelverk Junior",
     description: "Här hittar du små pärlfigurer inspirerade av Tetris och andra färgglada minnen. Skapade med fantasi och glädje.",
+  },
+  errors: {
+    loadError: "Ett fel uppstod vid laddning",
+    categoryNotFound: "Kategorin hittades inte",
+    productNotFound: "Produkten hittades inte",
   },
   footer: {
     contact: "Kontakt",

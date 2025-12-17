@@ -7,9 +7,9 @@ export type { CartItem };
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, 'quantity'>) => void;
-  removeItem: (id: number, category: string) => void;
-  updateQuantity: (id: number, category: string, quantity: number) => void;
+  addItem: (item: Omit<CartItem, 'quantity'>, maxStock?: number) => void;
+  removeItem: (id: string | number, category: string) => void;
+  updateQuantity: (id: string | number, category: string, quantity: number, maxStock?: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -20,13 +20,17 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addItem = (item: Omit<CartItem, 'quantity'>) => {
+  const addItem = (item: Omit<CartItem, 'quantity'>, maxStock?: number) => {
     setItems((prevItems) => {
       const existingItem = prevItems.find(
         (i) => i.id === item.id && i.category === item.category
       );
 
       if (existingItem) {
+        // Check stock limit if provided
+        if (maxStock !== undefined && existingItem.quantity >= maxStock) {
+          return prevItems; // Don't add more if at max stock
+        }
         // Increment quantity for existing item
         return prevItems.map((i) =>
           i.id === item.id && i.category === item.category
@@ -35,27 +39,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
         );
       }
 
-      // Add new item with quantity 1
+      // Add new item with quantity 1 if stock allows
+      if (maxStock !== undefined && maxStock <= 0) {
+        return prevItems; // Don't add if out of stock
+      }
       return [...prevItems, { ...item, quantity: 1 }];
     });
   };
 
-  const removeItem = (id: number, category: string) => {
+  const removeItem = (id: string | number, category: string) => {
     setItems((prevItems) =>
       prevItems.filter((item) => !(item.id === id && item.category === category))
     );
   };
 
-  const updateQuantity = (id: number, category: string, quantity: number) => {
+  const updateQuantity = (id: string | number, category: string, quantity: number, maxStock?: number) => {
     if (quantity <= 0) {
       removeItem(id, category);
       return;
     }
 
+    // Check stock limit if provided
+    const finalQuantity = maxStock !== undefined ? Math.min(quantity, maxStock) : quantity;
+
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id && item.category === category
-          ? { ...item, quantity }
+          ? { ...item, quantity: finalQuantity }
           : item
       )
     );

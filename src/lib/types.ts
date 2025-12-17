@@ -1,5 +1,5 @@
 export type Product = {
-  id: number;
+  id: string | number; // Support both string (folder name) and number for compatibility
   name: string;
   description: string;
   price: string;
@@ -9,7 +9,7 @@ export type Product = {
 };
 
 export type CartItem = {
-  id: number;
+  id: string | number; // Support both string (folder name) and number for compatibility
   name: string;
   price: string;
   image: string;
