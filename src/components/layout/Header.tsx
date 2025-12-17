@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCart } from '@/app/cart/context';
 import { texts } from '@/app/content/texts';
 import { useState } from 'react';
+import { testIds } from '@/lib/testids';
 
 export default function Header() {
   const { totalItems } = useCart();
@@ -17,9 +18,9 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8" data-testid={testIds.headerNav}>
           <div className="relative group">
-            <button className="text-gray-700 hover:text-black transition px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-pixel">
+            <button className="text-gray-700 hover:text-black transition px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-pixel" data-testid={testIds.shopDropdown}>
               {texts.nav.shop}
               <svg className="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
@@ -36,7 +37,7 @@ export default function Header() {
           <Link href="/cart" className="relative text-gray-700 hover:text-black transition px-2 py-1 rounded inline-block">
             <svg className="inline w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-pixel text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-white">
+              <span className="absolute -top-1 -right-1 bg-pixel text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-white" data-testid={testIds.cartBadge}>
                 {totalItems}
               </span>
             )}
@@ -48,6 +49,7 @@ export default function Header() {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden text-gray-700 hover:text-black"
           aria-label={texts.nav.toggleMenu}
+          data-testid={testIds.mobileMenuButton}
         >
           <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isMenuOpen ? (
@@ -61,7 +63,7 @@ export default function Header() {
 
       {/* Mobile Dropdown Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-light shadow-sm">
+        <div className="md:hidden bg-white border-t border-gray-light shadow-sm" data-testid={testIds.mobileMenu}>
           <nav className="flex flex-col px-6 py-4 gap-4">
             <Link
               href="/shop"

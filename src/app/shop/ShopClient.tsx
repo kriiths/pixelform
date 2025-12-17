@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import { texts } from '../content/texts';
 import type { Product } from '@/lib/types';
+import { testIds } from '@/lib/testids';
 
 interface Props {
   pixelparla: Product[];
@@ -41,6 +42,7 @@ export default function ShopClient({ pixelparla, resin, junior }: Props) {
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="border border-neutral-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
+            data-testid={testIds.sortSelect}
           >
             <option value="name">{texts.shop.sortOptions.name}</option>
             <option value="priceLow">{texts.shop.sortOptions.priceLow}</option>

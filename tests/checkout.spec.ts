@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { testIds } from './tests';
 
 test.describe('Checkout', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,7 +9,7 @@ test.describe('Checkout', () => {
     
     // Add product to cart
     await page.goto('/shop/pixelparla');
-    await page.locator('[data-testid="product-card"]').first().getByRole('button', { name: /add to cart/i }).click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().locator(`[data-testid="${testIds.addToCartButton}"]`).click();
   });
 
   test('should navigate to checkout from cart', async ({ page }) => {

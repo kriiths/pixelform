@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { contact } from '@/app/content/contact';
 import { faqs } from '@/app/content/faqs';
 import { texts } from '@/app/content/texts';
+import { testIds } from '@/lib/testids';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-light border-t border-gray-light mt-32">
+    <footer className="bg-gray-light border-t border-gray-light mt-32" data-testid={testIds.footer}>
       <div className="max-w-6xl mx-auto px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Kontaktinfo */}

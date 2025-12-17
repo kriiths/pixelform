@@ -45,3 +45,23 @@ pixelverk/
 - TypeScript 5
 - Tailwind CSS 4
 - Playwright (for E2E testing)
+
+## Testing and TestID Convention
+
+- **No hardcoded `data-testid` values**: All test IDs are defined in `src/lib/testids.ts` (for source code) and re-exported in `tests/tests.ts` (for Playwright tests).
+- **How to use**: Import `TEST_IDS` and use as `data-testid={TEST_IDS.PRODUCT_CARD}` etc. in components and as selectors in tests.
+- **Why**: This ensures consistency, prevents typos, and makes it easy to update test IDs project-wide.
+
+See also: `NO_HARD_CODED_STRINGS.md` for more on string management.
+
+### TestID Convention (Camel Case, Single Source)
+
+- All `data-testid` values use camelCase (e.g., `productCard`, `addToCartButton`).
+- The single source of truth is `src/lib/testids.ts` (exported as `testIds`).
+- Tests import from `tests/tests.ts`, which re-exports from `src/lib/testids.ts`.
+- Add new test IDs to `testIds` and use them in both source and tests.
+- Example usage:
+  - In components: `<div data-testid={testIds.productCard}>`
+  - In tests: `page.locator(`[data-testid="${testIds.productCard}"]`)`
+
+This ensures consistency, prevents typos, and makes updating test IDs easy.

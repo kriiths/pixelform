@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { testIds } from './tests';
 
 test.describe('Shop', () => {
   test('should display all products on main shop page', async ({ page }) => {
@@ -20,7 +21,7 @@ test.describe('Shop', () => {
     await expect(page).toHaveURL(/\/shop\/pixelparla/);
     
     // Should display products
-    await expect(page.locator('[data-testid="product-card"]').first()).toBeVisible();
+    await expect(page.locator(`[data-testid="${testIds.productCard}"]`).first()).toBeVisible();
   });
 
   test('should sort products by price', async ({ page }) => {
@@ -33,7 +34,7 @@ test.describe('Shop', () => {
     await page.waitForTimeout(500);
     
     // Get first and second product prices
-    const productCards = page.locator('[data-testid="product-card"]');
+    const productCards = page.locator(`[data-testid="${testIds.productCard}"]`);
     const count = await productCards.count();
     
     if (count >= 2) {
@@ -51,7 +52,7 @@ test.describe('Shop', () => {
     await page.goto('/shop/pixelparla');
     
     // Click on first product card
-    await page.locator('[data-testid="product-card"]').first().click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().click();
     
     // Should be on product detail page
     await expect(page).toHaveURL(/\/shop\/pixelparla\/[a-z-]+/);

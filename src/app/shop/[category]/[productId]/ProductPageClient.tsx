@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { CATEGORY_ACCENT, type Category } from '@/lib/types';
 import type { Product } from '@/lib/types';
+import { testIds } from '@/lib/testids';
 
 interface Props {
   product: Product;
@@ -41,7 +42,7 @@ export default function ProductPageClient({ product, category }: Props) {
   const handlePrev = () => setImgIdx((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-16 bg-offwhite min-h-[80vh]">
+    <main className="max-w-4xl mx-auto px-4 py-16 bg-offwhite min-h-[80vh]" data-testid={testIds.productDetailContainer}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <div className="bg-white rounded-xl border border-gray-light p-10 flex flex-col items-center justify-center shadow-subtle">
           <div className="relative w-full flex items-center justify-center">
@@ -50,6 +51,7 @@ export default function ProductPageClient({ product, category }: Props) {
               aria-label={texts.product.prevImage}
               className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10"
               style={{ display: images.length > 1 ? 'block' : 'none' }}
+              data-testid={testIds.prevImageButton}
             >
               {texts.product.prevArrow}
             </button>
@@ -65,6 +67,7 @@ export default function ProductPageClient({ product, category }: Props) {
               aria-label={texts.product.nextImage}
               className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10"
               style={{ display: images.length > 1 ? 'block' : 'none' }}
+              data-testid={testIds.nextImageButton}
             >
               {texts.product.nextArrow}
             </button>
@@ -100,6 +103,7 @@ export default function ProductPageClient({ product, category }: Props) {
                 type="button"
                 className="text-xs px-2 py-1 rounded bg-red-100 text-red-700 border border-red-200 hover:bg-red-200 transition"
                 onClick={() => removeItem(product.id, category)}
+                data-testid={testIds.removeFromCartButton}
               >
                 {texts.product.removeFromCart}
               </button>
@@ -114,7 +118,7 @@ export default function ProductPageClient({ product, category }: Props) {
           >
             {texts.product.addToCart}
           </Button>
-          <Link href="/shop" className="mt-8 text-resin hover:underline text-base font-medium">
+          <Link href="/shop" className="mt-8 text-resin hover:underline text-base font-medium" data-testid={testIds.backToShopLink}>
             {texts.product.backArrow} {texts.product.backToShop}
           </Link>
         </div>

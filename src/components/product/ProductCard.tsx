@@ -7,6 +7,7 @@ import { useCart } from '@/app/cart/context';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { texts } from '@/app/content/texts';
+import { testIds } from '@/lib/testids';
 
 
 interface ProductCardProps {
@@ -41,7 +42,7 @@ export default function ProductCard({ id, name, description, price, image, categ
   return (
     <Link href={`/shop/${category}/${id}`}> 
       <div
-        data-testid="product-card"
+        data-testid={testIds.productCard}
         className="bg-white border border-gray-light rounded-xl p-6 hover:shadow-subtle transition-all duration-200 cursor-pointer group flex flex-col h-full relative"
         style={{ borderTop: `4px solid ${ACCENT_COLORS[accent]}` }}
       >
@@ -59,10 +60,11 @@ export default function ProductCard({ id, name, description, price, image, categ
               type="button"
               variant="secondary"
               accentColor={accent}
-              className={`p-2 rounded-full shadow bg-white/80 hover:bg-white focus:outline-none transition-transform duration-200 ${clicked ? 'scale-125' : 'scale-100'} ${(stock === 0 || atMax) ? 'opacity-50 cursor-not-allowed' : ''}`}
+              data-testid={testIds.addToCartButton}
               aria-label={texts.product.addToCart}
               onClick={handleAddToCart}
               disabled={stock === 0 || atMax}
+              className={`p-2 rounded-full shadow bg-white/80 hover:bg-white focus:outline-none transition-transform duration-200 ${clicked ? 'scale-125' : 'scale-100'} ${(stock === 0 || atMax) ? 'opacity-50 cursor-not-allowed' : ''}`}
               style={{ minWidth: 0, width: 36, height: 36, padding: 0 }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -79,10 +81,7 @@ export default function ProductCard({ id, name, description, price, image, categ
             </Button>
           </div>
         </div>
-        <h3 
-          className="text-lg font-bold mb-2"
-          style={{ color: ACCENT_COLORS[accent] }}
-        >
+        <h3 className="text-lg font-semibold mb-2 text-black group-hover:text-gray transition-colors">
           {name}
         </h3>
         <p className="text-sm text-gray mb-4 flex-1">{description}</p>

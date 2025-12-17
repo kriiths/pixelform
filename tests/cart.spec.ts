@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { testIds } from './tests';
 
 test.describe('Cart', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,7 +12,7 @@ test.describe('Cart', () => {
     await page.goto('/shop/pixelparla');
     
     // Add first product to cart
-    await page.locator('[data-testid="product-card"]').first().getByRole('button', { name: /add to cart/i }).click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().locator(`[data-testid="${testIds.addToCartButton}"]`).click();
     
     // Cart badge should show 1 item
     await expect(page.locator('a[href="/cart"]').locator('span')).toHaveText('1');
@@ -27,7 +28,7 @@ test.describe('Cart', () => {
     await page.goto('/cart');
     
     // Should display the added product
-    await expect(page.locator('[data-testid="cart-item"]').first()).toBeVisible();
+    await expect(page.locator(`[data-testid="${testIds.cartItem}"]`).first()).toBeVisible();
     
     // Should show total price
     await expect(page.locator('text=/total/i')).toBeVisible();
@@ -37,7 +38,7 @@ test.describe('Cart', () => {
     await page.goto('/shop/pixelparla');
     
     // Add product to cart
-    await page.locator('[data-testid="product-card"]').first().getByRole('button', { name: /add to cart/i }).click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().locator(`[data-testid="${testIds.addToCartButton}"]`).click();
     
     // Go to cart
     await page.goto('/cart');
@@ -69,7 +70,7 @@ test.describe('Cart', () => {
     await page.goto('/shop/pixelparla');
     
     // Click on a product to view details
-    await page.locator('[data-testid="product-card"]').first().click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().click();
     
     // Get the stock amount (assuming it's displayed)
     const stockText = await page.locator('text=/stock|i lager/i').textContent();
@@ -95,7 +96,7 @@ test.describe('Cart', () => {
     await page.goto('/shop/pixelparla');
     
     // Get price from first product
-    const firstProduct = page.locator('[data-testid="product-card"]').first();
+    const firstProduct = page.locator(`[data-testid="${testIds.productCard}"]`).first();
     const priceText = await firstProduct.locator('text=/\\d+\\s*kr/i').textContent();
     const price = parseInt(priceText?.replace(/\D/g, '') || '0');
     

@@ -5,6 +5,7 @@ import { useCart } from '@/app/cart/context';
 import { texts } from '@/app/content/texts';
 import type { CartItem as CartItemType } from '@/lib/types';
 import Link from 'next/link';
+import { testIds } from '@/lib/testids';
 
 interface CartItemProps {
   item: CartItemType;
@@ -14,7 +15,7 @@ export default function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeItem } = useCart();
 
   return (
-    <div className="flex gap-4 border-b border-neutral-200 pb-4 mb-4" data-testid="cart-item">
+    <div className="flex gap-4 border-b border-neutral-200 pb-4 mb-4" data-testid={testIds.cartItem}>
       <div className="relative w-24 h-24 bg-neutral-100 rounded">
         <Image
           src={item.image}
@@ -40,6 +41,7 @@ export default function CartItem({ item }: CartItemProps) {
               onClick={() => updateQuantity(item.id, item.category, item.quantity - 1)}
               className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100 transition"
               aria-label={texts.cart.decreaseQuantity}
+              data-testid={testIds.decreaseQuantityButton}
             >
               -
             </button>
@@ -48,6 +50,7 @@ export default function CartItem({ item }: CartItemProps) {
               onClick={() => updateQuantity(item.id, item.category, item.quantity + 1)}
               className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100 transition"
               aria-label={texts.cart.increaseQuantity}
+              data-testid={testIds.increaseQuantityButton}
             >
               +
             </button>
@@ -62,6 +65,7 @@ export default function CartItem({ item }: CartItemProps) {
         <button
           onClick={() => removeItem(item.id, item.category)}
           className="text-sm text-red-600 hover:text-red-700 transition"
+          data-testid={testIds.removeFromCartButton}
         >
           {texts.cart.remove}
         </button>
