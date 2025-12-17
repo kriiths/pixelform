@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function ShopClient({ pixelparla, resin, junior }: Props) {
-  const [sortBy, setSortBy] = useState<string>('newest');
+  const [sortBy, setSortBy] = useState<string>('name');
 
   // Sort helper
   const sortProducts = (products: Product[]) => {
@@ -23,10 +23,8 @@ export default function ShopClient({ pixelparla, resin, junior }: Props) {
         case 'priceHigh':
           return parseInt(b.price.replace(/\D/g, ''), 10) - parseInt(a.price.replace(/\D/g, ''), 10);
         case 'name':
-          return a.name.localeCompare(b.name, 'sv');
-        case 'newest':
         default:
-          return 0;
+          return a.name.localeCompare(b.name, 'sv');
       }
     });
   };
@@ -44,10 +42,9 @@ export default function ShopClient({ pixelparla, resin, junior }: Props) {
             onChange={(e) => setSortBy(e.target.value)}
             className="border border-neutral-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
           >
-            <option value="newest">{texts.shop.sortOptions.newest}</option>
+            <option value="name">{texts.shop.sortOptions.name}</option>
             <option value="priceLow">{texts.shop.sortOptions.priceLow}</option>
             <option value="priceHigh">{texts.shop.sortOptions.priceHigh}</option>
-            <option value="name">{texts.shop.sortOptions.name}</option>
           </select>
         </div>
       </div>

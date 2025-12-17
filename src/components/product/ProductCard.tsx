@@ -41,6 +41,7 @@ export default function ProductCard({ id, name, description, price, image, categ
   return (
     <Link href={`/shop/${category}/${id}`}> 
       <div
+        data-testid="product-card"
         className="bg-white border border-gray-light rounded-xl p-6 hover:shadow-subtle transition-all duration-200 cursor-pointer group flex flex-col h-full relative"
         style={{ borderTop: `4px solid ${ACCENT_COLORS[accent]}` }}
       >

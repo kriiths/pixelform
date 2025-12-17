@@ -14,7 +14,7 @@ export default function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeItem } = useCart();
 
   return (
-    <div className="flex gap-4 border-b border-neutral-200 pb-4 mb-4">
+    <div className="flex gap-4 border-b border-neutral-200 pb-4 mb-4" data-testid="cart-item">
       <div className="relative w-24 h-24 bg-neutral-100 rounded">
         <Image
           src={item.image}
