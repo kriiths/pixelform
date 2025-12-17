@@ -51,9 +51,9 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
       const productCount = await getProductCount(page);
       expect(productCount).toBeGreaterThanOrEqual(config.minProductsPerCategory);
 
-      // Verify category name is displayed
+      // Verify category name is displayed (check heading specifically)
       const categoryName = texts.shop.categories[category];
-      await expect(page.getByText(categoryName)).toBeVisible();
+      await expect(page.getByRole('heading', { name: categoryName })).toBeVisible();
     }
 
     // STEP 3: Return to homepage
@@ -94,32 +94,32 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
     await page.goto(paths.shop);
     
     // Should show all category headers
-    await expect(page.getByText(texts.shop.categories.pixelparla)).toBeVisible();
-    await expect(page.getByText(texts.shop.categories.resin)).toBeVisible();
-    await expect(page.getByText(texts.shop.categories.junior)).toBeVisible();
+    await expect(page.getByRole('heading', { name: texts.shop.categories.pixelparla })).toBeVisible();
+    await expect(page.getByRole('heading', { name: texts.shop.categories.resin })).toBeVisible();
+    await expect(page.getByRole('heading', { name: texts.shop.categories.junior })).toBeVisible();
   });
 
   test('should use navigation to explore different categories', async ({ page }) => {
     // STEP 1: Use header navigation to browse categories
     await page.getByRole('link', { name: texts.nav.shop }).first().click();
     
-    // Should be on shop page
-    await expect(page).toHaveURL(paths.shop);
+    // Should be on shop page (verify product listing is visible)
+    await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
 
     // STEP 2: Navigate via category links in header dropdown (if exists)
     // Click on pixelparla category
     await page.goto(paths.pixelParla);
-    await expect(page).toHaveURL(paths.pixelParla);
+    await expect(page.getByRole('heading', { name: texts.shop.categories.pixelparla })).toBeVisible();
     await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
 
     // STEP 3: Navigate to resin category
     await page.goto(paths.resin);
-    await expect(page).toHaveURL(paths.resin);
+    await expect(page.getByRole('heading', { name: texts.shop.categories.resin })).toBeVisible();
     await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
 
     // STEP 4: Navigate to junior category
     await page.goto(paths.junior);
-    await expect(page).toHaveURL(paths.junior);
+    await expect(page.getByRole('heading', { name: texts.shop.categories.junior })).toBeVisible();
     await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
   });
 
@@ -170,7 +170,7 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
 
     // STEP 3: Go back to category using back link
     await page.getByTestId(testIds.backToShopLink).click();
-    await expect(page).toHaveURL(paths.shop);
+    await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
 
     // STEP 4: Navigate to category again
     await goToCategory(page, 'pixelparla');

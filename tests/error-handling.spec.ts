@@ -1,4 +1,5 @@
 import { test, expect } from './fixtures';
+import { testIds } from './tests';
 import { texts, paths } from '../src/app/content/texts';
 
 test.describe('Error Handling', () => {
@@ -60,7 +61,7 @@ test.describe('Error Handling', () => {
     await page.goto(paths.pixelParla);
     
     // Check if there are products or a "no products" message
-    const hasProducts = await page.getByTestId('productCard').count() > 0;
+    const hasProducts = await page.getByTestId(testIds.productCard).count() > 0;
     const hasNoProductsMsg = await page.getByText(texts.shop.noProducts).isVisible();
     
     // Either products should exist OR no products message should show
@@ -71,10 +72,18 @@ test.describe('Error Handling', () => {
     // Go to a non-existent product
     await page.goto(paths.productDetail('pixelparla', 'non-existent-999'));
     
-    // Header navigation should still work
-    await expect(page.getByRole('link', { name: texts.nav.shop })).toBeVisible();
+    // Header navigation should still work (check for shop dropdown or direct link)
+    const shopLink = page.getByRole('button', { name: texts.nav.shop });
+    const isShopVisible = await shopLink.isVisible();
+    if (isShopVisible) {
+      await expect(shopLink).toBeVisible();
+    } else {
+      await expect(page.getByRole('link', { name: texts.nav.shop })).toBeVisible();
+    }
     await expect(page.getByRole('link', { name: texts.nav.about })).toBeVisible();
-    await expect(page.getByRole('link', { name: texts.nav.cart })).toBeVisible();
+    // Check for cart (link or icon)
+    const cartLink = page.locator(`a[href="${paths.cart}"]`);
+    await expect(cartLink).toBeVisible();
   });
 
   test('should provide link back to shop on error page', async ({ page }) => {
@@ -89,13 +98,20 @@ test.describe('Error Handling', () => {
     await page.goto(paths.pixelParla);
     
     // Rapidly click add to cart
-    const addButton = page.getByTestId('addToCartCardButton').first();
+    const addButton = page.getByTestId(testIds.addToCartCardButton).first();
+    // Wait for button to be enabled before rapid clicking
+    await expect(addButton).toBeVisible();
+    await expect(addButton).toBeEnabled({ timeout: 5000 });
+    
     for (let i = 0; i < 5; i++) {
+      const isEnabled = await addButton.isEnabled();
+      if (!isEnabled) break; // Stop if button becomes disabled
       await addButton.click();
+      await page.waitForTimeout(50);
     }
     
     // Should still function without crashing
     await page.goto(paths.cart);
-    await expect(page.getByTestId('cartItem')).toBeVisible();
+    await expect(page.getByTestId(testIds.cartItem)).toBeVisible();
   });
 });

@@ -1,7 +1,5 @@
-import Link from 'next/link';
 import { contact } from '@/app/content/contact';
 import { texts } from '@/app/content/texts';
-import { paths } from '@/lib/paths';
 
 export function FooterContact() {
   return (
@@ -30,23 +28,15 @@ export function FooterLinks() {
   return (
     <div>
       <h3 className="text-lg font-bold mb-6 text-black tracking-tight">
-        {texts.footer.quickLinks}
+        {texts.footer.social}
       </h3>
-      <div className="text-base text-gray space-y-2">
-        <Link href={paths.shop} className="block hover:text-black transition font-medium">
-          {texts.nav.shop}
-        </Link>
-        <Link href={paths.about} className="block hover:text-black transition font-medium">
-          {texts.nav.about}
-        </Link>
-        <Link href={paths.cart} className="block hover:text-black transition font-medium">
-          {texts.nav.cart}
-        </Link>
-      </div>
-      <div className="pt-6">
-        <h4 className="font-semibold mb-2 text-black">{texts.footer.social}</h4>
-        <p>Instagram: <span className="font-medium">{contact.social.instagram}</span></p>
-        <p>Facebook: <span className="font-medium">{contact.social.facebook}</span></p>
+      <div className="text-base text-gray space-y-3">
+        <p className="hover:text-black transition">
+          Instagram: <a href={`https://instagram.com/${contact.social.instagram}`} target="_blank" rel="noopener noreferrer" className="font-medium text-pixel hover:underline">{contact.social.instagram}</a>
+        </p>
+        <p className="hover:text-black transition">
+          Facebook: <a href={`https://facebook.com/${contact.social.facebook}`} target="_blank" rel="noopener noreferrer" className="font-medium text-pixel hover:underline">{contact.social.facebook}</a>
+        </p>
       </div>
     </div>
   );

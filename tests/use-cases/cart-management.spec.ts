@@ -220,9 +220,13 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
   });
 
   test('should handle rapid cart updates without errors', async ({ page }) => {
-    // STEP 1: Rapidly add products
+    // STEP 0: Clear cart first to ensure clean state
+    await clearCart(page);
+    await page.reload();
+    
+    // STEP 1: Rapidly add products (use product with higher stock)
     for (let i = 0; i < 5; i++) {
-      await addProductToCart(page, 'pixelparla', 0);
+      await addProductToCart(page, 'pixelparla', 1); // Index 1 = mario-mushrooms-red (stock: 8)
     }
 
     // STEP 2: Go to cart

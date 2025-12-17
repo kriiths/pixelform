@@ -34,6 +34,7 @@ export default function ProductCard({ id, name, description, price, image, categ
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (atMax) return;
     addItem({ id, name, price, image, category }, stock);
     setClicked(true);
@@ -84,6 +85,7 @@ export default function ProductCard({ id, name, description, price, image, categ
         <h3
           className="text-lg font-bold mb-2 group-hover:opacity-80 transition-colors"
           style={{ color: ACCENT_COLORS[accent] }}
+          data-testid={testIds.productName}
         >
           {name}
         </h3>

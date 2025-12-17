@@ -69,7 +69,7 @@ await page.getByTestId(testIds.productCard).click();
 // ❌ WRONG - Hardcoded values
 await page.goto('/shop');
 await expect(page.getByText('Shop')).toBeVisible();
-await page.locator('[data-testid="productCard"]').click();
+await page.getByTestId(testIds.productCard).click();
 ```
 
 **📖 Full Guidelines:** See [docs/CENTRALIZED_CONTENT_GUIDE.md](../docs/CENTRALIZED_CONTENT_GUIDE.md)

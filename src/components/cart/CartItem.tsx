@@ -28,7 +28,7 @@ export default function CartItem({ item }: CartItemProps) {
       <ProductImage src={item.image} alt={item.name} size="sm" />
 
       <div className="flex-1">
-        <h3 className="font-semibold text-neutral-900">
+        <h3 className="font-semibold text-neutral-900" data-testid={testIds.cartItemName}>
           <Link href={paths.productDetail(item.category, String(item.id))} className="hover:underline focus:underline">
             {item.name}
           </Link>

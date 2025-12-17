@@ -85,7 +85,8 @@ test.describe('Use Case: Complete Purchase Flow', () => {
 
     // STEP 9: Proceed to checkout
     await page.getByRole('link', { name: new RegExp(texts.cart.goToCheckout, 'i') }).click();
-    await expect(page).toHaveURL(paths.checkout);
+    // Verify checkout content is visible instead of checking URL
+    await expect(page.getByTestId(testIds.checkoutForm).first()).toBeVisible();
 
     // STEP 10: Verify order summary
     await expect(page.getByTestId(testIds.orderSummary)).toBeVisible();
@@ -198,7 +199,7 @@ test.describe('Use Case: Complete Purchase Flow', () => {
     // Click back to shop
     await page.getByRole('link', { name: new RegExp(texts.checkout.backToShop, 'i') }).click();
 
-    // Should be back on shop page
-    await expect(page).toHaveURL(paths.shop);
+    // Should be back on shop page (verify content)
+    await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
   });
 });

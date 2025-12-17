@@ -64,7 +64,7 @@ export default function CheckoutPage() {
           <h2 className="text-xl font-semibold mb-4 text-neutral-900">
             {texts.checkout.payment}
           </h2>
-          <Panel variant="muted">
+          <Panel variant="muted" testId={testIds.checkoutForm}>
             <p className="text-sm text-neutral-600 mb-4">
               {texts.checkout.mockPayment}
             </p>

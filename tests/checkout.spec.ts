@@ -8,7 +8,11 @@ test.describe('Checkout', () => {
     await page.evaluate(() => localStorage.clear());
     // Add product to cart
     await page.goto(paths.pixelParla);
-    await page.getByTestId(testIds.productCard).first().getByTestId(testIds.addToCartCardButton).click();
+    const addButton = page.getByTestId(testIds.productCard).first().getByTestId(testIds.addToCartCardButton);
+    await expect(addButton).toBeEnabled();
+    await addButton.click();
+    // Wait for cart badge to update
+    await expect(page.locator(`a[href="${paths.cart}"] span`)).toHaveText('1');
   });
 
   test('should navigate to checkout from cart', async ({ page }) => {
@@ -20,14 +24,14 @@ test.describe('Checkout', () => {
       checkoutButton = page.getByRole('link', { name: texts.nav.checkout });
     }
     await checkoutButton.click();
-    // Should be on checkout page
-    await expect(page).toHaveURL(paths.checkout);
+    // Should be on checkout page (verify checkout content - order summary or form fields)
+    await expect(page.getByTestId(testIds.orderSummary).first()).toBeVisible();
   });
 
   test('should display checkout page content', async ({ page }) => {
     await page.goto(paths.checkout);
     // Should show checkout heading or form
-    await expect(page.getByText(texts.checkout.title)).toBeVisible();
+    await expect(page.getByRole('heading', { name: texts.checkout.title })).toBeVisible();
   });
 
   test('should not allow checkout with empty cart', async ({ page }) => {

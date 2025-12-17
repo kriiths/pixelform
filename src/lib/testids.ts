@@ -1,3 +1,4 @@
+
 // Centralized data-testid constants for components (camelCase)
 // Using 'as const' for type safety - keys and values are identical by convention
 export const testIds = {
@@ -5,13 +6,19 @@ export const testIds = {
   productCard: 'productCard',
   addToCartCardButton: 'addToCartCardButton',
   addToCartPageButton: 'addToCartPageButton',
-
+  productName: 'product-name',
+  cartItemName: 'cart-item-name',
+  productPrice: 'product-price',
+  productDescription: 'product-description',
+  productStockBadge: 'product-stock-badge',
+  
   // Cart components
   cartItem: 'cartItem',
   decreaseQuantityButton: 'decreaseQuantityButton',
   increaseQuantityButton: 'increaseQuantityButton',
   removeFromCartButton: 'removeFromCartButton',
   cartBadge: 'cartBadge',
+  clearCartButton: 'clearCartButton',
 
   // Navigation
   headerNav: 'headerNav',

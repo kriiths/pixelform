@@ -15,7 +15,19 @@ export async function addProductToCart(
 ) {
   await goToCategory(page, category);
   const products = page.getByTestId(testIds.productCard);
-  await products.nth(productIndex).getByTestId(testIds.addToCartCardButton).click();
+  const product = products.nth(productIndex);
+
+  // Ensure product and its add button are visible and enabled
+  await expect(product).toBeVisible();
+  const addButton = product.getByTestId(testIds.addToCartCardButton);
+  await expect(addButton).toBeVisible();
+  await expect(addButton).toBeEnabled({ timeout: 3000 });
+
+  // Capture initial cart count, click and wait for badge to increase
+  const initialCount = await getCartCount(page);
+  await addButton.click();
+  const badge = page.locator(`a[href="${paths.cart}"] span`);
+  await expect(badge).toHaveText(String(initialCount + 1), { timeout: 5000 });
 }
 
 /**
@@ -106,7 +118,10 @@ export async function verifyCartIsEmpty(page: Page) {
  * @param itemIndex - Index of cart item (default: 0)
  */
 export async function increaseQuantity(page: Page, itemIndex = 0) {
-  await page.getByTestId(testIds.increaseQuantityButton).nth(itemIndex).click();
+  const button = page.getByTestId(testIds.increaseQuantityButton).nth(itemIndex);
+  await expect(button).toBeVisible();
+  await expect(button).toBeEnabled();
+  await button.click();
 }
 
 /**
@@ -115,7 +130,10 @@ export async function increaseQuantity(page: Page, itemIndex = 0) {
  * @param itemIndex - Index of cart item (default: 0)
  */
 export async function decreaseQuantity(page: Page, itemIndex = 0) {
-  await page.getByTestId(testIds.decreaseQuantityButton).nth(itemIndex).click();
+  const button = page.getByTestId(testIds.decreaseQuantityButton).nth(itemIndex);
+  await expect(button).toBeVisible();
+  await expect(button).toBeEnabled();
+  await button.click();
 }
 
 /**
@@ -133,7 +151,11 @@ export async function removeFromCart(page: Page, itemIndex = 0) {
  * @param productIndex - Index of product (default: 0)
  */
 export async function viewProductDetails(page: Page, productIndex = 0) {
-  await page.getByTestId(testIds.productCard).nth(productIndex).click();
+  await Promise.all([
+    page.waitForURL(/\/shop\/.*\/.*/),
+    page.getByTestId(testIds.productCard).nth(productIndex).click(),
+  ]);
+  await expect(page.getByTestId(testIds.productDetailContainer)).toBeVisible();
 }
 
 /**
