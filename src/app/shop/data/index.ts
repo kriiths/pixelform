@@ -1,11 +1,5 @@
-import { pixelparla } from './pixelparla';
-import { resin } from './resin';
-import { junior } from './junior';
+import { loadAllProducts, loadProductsByCategory, getProductById } from './loader';
 
-export const products = {
-  pixelparla,
-  resin,
-  junior,
-};
+export { loadAllProducts, loadProductsByCategory, getProductById };
 
 export type { Product } from '@/lib/types';

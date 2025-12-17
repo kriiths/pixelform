@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import type { CartItem } from '@/lib/types';
-import { products } from '@/app/shop/data/index';
 
 export type { CartItem };
 
@@ -27,16 +26,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         (i) => i.id === item.id && i.category === item.category
       );
 
-      // Find the product in the products data to get stock
-      const productList = products[item.category as keyof typeof products];
-      const product = productList?.find((p) => p.id === item.id);
-      const stock = product?.stock ?? 0;
-
       if (existingItem) {
-        if (existingItem.quantity >= stock) {
-          // Do not add more than stock
-          return prevItems;
-        }
+        // Increment quantity for existing item
         return prevItems.map((i) =>
           i.id === item.id && i.category === item.category
             ? { ...i, quantity: i.quantity + 1 }
@@ -44,11 +35,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         );
       }
 
-      if (stock > 0) {
-        return [...prevItems, { ...item, quantity: 1 }];
-      }
-      // If out of stock, do not add
-      return prevItems;
+      // Add new item with quantity 1
+      return [...prevItems, { ...item, quantity: 1 }];
     });
   };
 
@@ -64,16 +52,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Find the product in the products data to get stock
-    const productList = products[category as keyof typeof products];
-    const product = productList?.find((p) => p.id === id);
-    const stock = product?.stock ?? 0;
-    const safeQuantity = Math.min(quantity, stock);
-
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id && item.category === category
-          ? { ...item, quantity: safeQuantity }
+          ? { ...item, quantity }
           : item
       )
     );

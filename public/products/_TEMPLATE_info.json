@@ -1,0 +1,8 @@
+{
+  "id": "product-folder-name",
+  "name": "Product Display Name",
+  "description": "Detailed description of your product. Describe materials, colors, size, and what makes it special!",
+  "price": "450 kr",
+  "stock": 5,
+  "category": "pixelparla"
+}

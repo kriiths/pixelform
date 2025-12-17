@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useCart } from '@/app/cart/context';
-import { products } from '@/app/shop/data/index';
 import { texts } from '@/app/content/texts';
 import type { CartItem as CartItemType } from '@/lib/types';
 import Link from 'next/link';
@@ -13,10 +12,6 @@ interface CartItemProps {
 
 export default function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeItem } = useCart();
-  // Look up stock for this item from products data
-  const productList = products[item.category as keyof typeof products];
-  const product = productList?.find((p) => p.id === item.id);
-  const stock = product?.stock ?? 0;
 
   return (
     <div className="flex gap-4 border-b border-neutral-200 pb-4 mb-4">
@@ -51,10 +46,8 @@ export default function CartItem({ item }: CartItemProps) {
             <span className="w-8 text-center">{item.quantity}</span>
             <button
               onClick={() => updateQuantity(item.id, item.category, item.quantity + 1)}
-              className={`w-7 h-7 flex items-center justify-center border border-neutral-300 rounded transition ${item.quantity >= stock ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-100'}`}
+              className="w-7 h-7 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100 transition"
               aria-label={texts.cart.increaseQuantity}
-              disabled={item.quantity >= stock}
-              title={item.quantity >= stock ? texts.product.maxStockReached : undefined}
             >
               +
             </button>
