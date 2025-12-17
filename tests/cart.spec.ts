@@ -22,7 +22,7 @@ test.describe('Cart', () => {
     await page.goto('/shop/pixelparla');
     
     // Add product to cart
-    await page.locator('[data-testid="product-card"]').first().getByRole('button', { name: /add to cart/i }).click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().locator(`[data-testid="${testIds.addToCartButton}"]`).click();
     
     // Navigate to cart page
     await page.goto('/cart');
@@ -54,7 +54,7 @@ test.describe('Cart', () => {
     await page.goto('/shop/pixelparla');
     
     // Add product to cart
-    await page.locator('[data-testid="product-card"]').first().getByRole('button', { name: /add to cart/i }).click();
+    await page.locator(`[data-testid="${testIds.productCard}"]`).first().locator(`[data-testid="${testIds.addToCartButton}"]`).click();
     
     // Go to cart
     await page.goto('/cart');
@@ -101,7 +101,7 @@ test.describe('Cart', () => {
     const price = parseInt(priceText?.replace(/\D/g, '') || '0');
     
     // Add to cart
-    await firstProduct.getByRole('button', { name: /add to cart/i }).click();
+    await firstProduct.locator(`[data-testid="${testIds.addToCartButton}"]`).click();
     
     // Go to cart
     await page.goto('/cart');

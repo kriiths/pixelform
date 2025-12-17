@@ -1,4 +1,4 @@
-import { getProductById, loadAllProducts } from '../../data/loader';
+import { getProductById, loadProductsByCategory } from '../../data/loader';
 import { texts } from '@/app/content/texts';
 import Link from 'next/link';
 import ProductPageClient from './ProductPageClient';
@@ -9,11 +9,11 @@ interface Props {
 
 // Generate static params for all products
 export async function generateStaticParams() {
-  const categories = ['pixelparla', 'resin', 'junior'];
+  const categories = ['pixelparla', 'resin', 'junior'] as const;
   const allParams: Array<{ category: string; productId: string }> = [];
   
   for (const category of categories) {
-    const products = await import('../../data/loader').then(m => m.loadProductsByCategory(category));
+    const products = await loadProductsByCategory(category);
     const params = products.map(product => ({
       category,
       productId: String(product.id),

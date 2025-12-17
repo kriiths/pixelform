@@ -59,6 +59,6 @@ test.describe('Shop', () => {
     
     // Should show product details
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.getByRole('button', { name: /add to cart/i })).toBeVisible();
+    await expect(page.locator(`[data-testid="${testIds.addToCartButton}"]`)).toBeVisible();
   });
 });

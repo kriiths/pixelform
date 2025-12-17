@@ -1,4 +1,5 @@
 // Centralized data-testid constants for components
+// Using 'as const' for type safety - keys and values are identical by convention
 export const testIds = {
   // Product components
   productCard: 'productCard',
@@ -28,4 +29,7 @@ export const testIds = {
   
   // Footer
   footer: 'footer',
-};
+} as const;
+
+// Type helper for testId values
+export type TestId = typeof testIds[keyof typeof testIds];

@@ -81,7 +81,10 @@ export default function ProductCard({ id, name, description, price, image, categ
             </Button>
           </div>
         </div>
-        <h3 className="text-lg font-semibold mb-2 text-black group-hover:text-gray transition-colors">
+        <h3 
+          className="text-lg font-bold mb-2 group-hover:opacity-80 transition-colors"
+          style={{ color: ACCENT_COLORS[accent] }}
+        >
           {name}
         </h3>
         <p className="text-sm text-gray mb-4 flex-1">{description}</p>

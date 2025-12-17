@@ -41,31 +41,51 @@ export default function ProductPageClient({ product, category }: Props) {
   const handleNext = () => setImgIdx((prev) => (prev + 1) % images.length);
   const handlePrev = () => setImgIdx((prev) => (prev - 1 + images.length) % images.length);
 
+  // Keyboard navigation for image gallery
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (images.length <= 1) return;
+    if (e.key === 'ArrowLeft') {
+      handlePrev();
+    } else if (e.key === 'ArrowRight') {
+      handleNext();
+    }
+  };
+
   return (
     <main className="max-w-4xl mx-auto px-4 py-16 bg-offwhite min-h-[80vh]" data-testid={testIds.productDetailContainer}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        <div className="bg-white rounded-xl border border-gray-light p-10 flex flex-col items-center justify-center shadow-subtle">
-          <div className="relative w-full flex items-center justify-center">
+        <div 
+          className="bg-white rounded-xl border border-gray-light p-10 flex flex-col items-center justify-center shadow-subtle"
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          role="region"
+          aria-label={texts.product.selectImage}
+        >
+          {/* Fixed height container to prevent arrow movement */}
+          <div className="relative w-full h-[400px] flex items-center justify-center">
             <button
               onClick={handlePrev}
               aria-label={texts.product.prevImage}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10"
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10 focus:outline-none focus:ring-2 focus:ring-pixel"
               style={{ display: images.length > 1 ? 'block' : 'none' }}
               data-testid={testIds.prevImageButton}
             >
               {texts.product.prevArrow}
             </button>
-            <Image
-              src={images[imgIdx]}
-              alt={product.name}
-              width={400}
-              height={400}
-              className="object-contain rounded-xl"
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src={images[imgIdx]}
+                alt={product.name}
+                fill
+                className="object-contain rounded-xl"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority
+              />
+            </div>
             <button
               onClick={handleNext}
               aria-label={texts.product.nextImage}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10"
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10 focus:outline-none focus:ring-2 focus:ring-pixel"
               style={{ display: images.length > 1 ? 'block' : 'none' }}
               data-testid={testIds.nextImageButton}
             >
@@ -78,7 +98,7 @@ export default function ProductPageClient({ product, category }: Props) {
                 <button
                   key={img}
                   onClick={() => setImgIdx(idx)}
-                  className={`w-3 h-3 rounded-full border ${imgIdx === idx ? 'bg-black' : 'bg-gray-light'}`}
+                  className={`w-3 h-3 rounded-full border ${imgIdx === idx ? 'bg-black' : 'bg-gray-light'} focus:outline-none focus:ring-2 focus:ring-pixel`}
                   aria-label={`${texts.product.selectImage} ${idx + 1}`}
                 />
               ))}
