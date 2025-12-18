@@ -1,16 +1,18 @@
 import { Page, expect } from '@playwright/test';
+import type { Category } from '@/lib/types';
 import { testIds } from './tests';
 import { paths, texts } from '../src/app/content/texts';
+import { testCategories } from './test-data';
 
 /**
  * Add a product to cart from a category page
  * @param page - Playwright page object
- * @param category - Category to navigate to ('pixelparla' | 'resin' | 'junior')
+ * @param category - Category to navigate to
  * @param productIndex - Index of product to add (default: 0)
  */
 export async function addProductToCart(
   page: Page,
-  category: 'pixelparla' | 'resin' | 'junior' = 'pixelparla',
+  category: Category = testCategories.pixelParla,
   productIndex = 0
 ) {
   await goToCategory(page, category);
@@ -56,8 +58,8 @@ export async function getCartCount(page: Page): Promise<number> {
  * @param page - Playwright page object
  * @param category - Category to navigate to
  */
-export async function goToCategory(page: Page, category: 'pixelparla' | 'resin' | 'junior') {
-  const categoryPaths = {
+export async function goToCategory(page: Page, category: Category) {
+  const categoryPaths: Record<Category, string> = {
     pixelparla: paths.pixelParla,
     resin: paths.resin,
     junior: paths.junior,

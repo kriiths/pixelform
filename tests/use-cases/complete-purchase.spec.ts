@@ -1,6 +1,8 @@
 import { test, expect } from '../fixtures';
+import type { Category } from '@/lib/types';
 import { testIds } from '../tests';
 import { texts, paths } from '../../src/app/content/texts';
+import { testCategories, testCustomers, testScenarios } from '../test-data';
 import {
   addProductToCart,
   goToCart,
@@ -14,16 +16,11 @@ import {
  * FULL CHAIN USE CASE 1: Complete Purchase Flow
  * 
  * This test simulates a complete user journey from browsing to checkout.
- * 
- * Configurable Options:
- * - category: Which category to shop from ('pixelparla' | 'resin' | 'junior')
- * - productIndex: Which product to select (0-based index)
- * - quantity: How many items to purchase
- * - customerInfo: Customer details for checkout
  */
 
+// Test configuration at top of file
 type PurchaseConfig = {
-  category: 'pixelparla' | 'resin' | 'junior';
+  category: Category;
   productIndex: number;
   quantity: number;
   customerInfo: {
@@ -33,20 +30,24 @@ type PurchaseConfig = {
   };
 };
 
-const defaultConfig: PurchaseConfig = {
-  category: 'pixelparla',
-  productIndex: 0,
-  quantity: 2,
-  customerInfo: {
-    name: 'Anna Andersson',
-    email: 'anna@example.com',
-    address: 'Storgatan 1, 12345 Stockholm',
+const testConfig = {
+  singleProduct: {
+    category: testCategories.pixelParla,
+    productIndex: 0,
+    quantity: 2,
+    customerInfo: testCustomers.anna,
+  },
+  multiCategory: testScenarios.purchase.multiCategory,
+  quickPurchase: {
+    category: testCategories.resin,
+    productIndex: 0,
+    customerInfo: testCustomers.default,
   },
 };
 
 test.describe('Use Case: Complete Purchase Flow', () => {
   test('should complete full purchase from homepage to checkout confirmation', async ({ page }) => {
-    const config = defaultConfig;
+    const config = testConfig.singleProduct;
 
     // STEP 1: Start from homepage
     await expect(page.getByTestId(testIds.heroTitle)).toBeVisible();
@@ -109,16 +110,7 @@ test.describe('Use Case: Complete Purchase Flow', () => {
   });
 
   test('should handle purchase with quantity adjustment in cart', async ({ page }) => {
-    const config: PurchaseConfig = {
-      category: 'resin',
-      productIndex: 0,
-      quantity: 1,
-      customerInfo: {
-        name: 'Bengt Bengtsson',
-        email: 'bengt@example.com',
-        address: 'Vasagatan 10, 11120 Stockholm',
-      },
-    };
+    const config = testConfig.quickPurchase;
 
     // Add product to cart
     await addProductToCart(page, config.category, config.productIndex);
@@ -148,22 +140,12 @@ test.describe('Use Case: Complete Purchase Flow', () => {
   });
 
   test('should handle multi-product purchase from different categories', async ({ page }) => {
-    const config = {
-      customerInfo: {
-        name: 'Cecilia Carlsson',
-        email: 'cecilia@example.com',
-        address: 'Drottninggatan 5, 11151 Stockholm',
-      },
-    };
+    const config = testConfig.multiCategory;
 
-    // Add product from pixelparla
-    await addProductToCart(page, 'pixelparla', 0);
-
-    // Add product from resin
-    await addProductToCart(page, 'resin', 0);
-
-    // Add product from junior
-    await addProductToCart(page, 'junior', 0);
+    // Add products from each category
+    for (const product of config.products) {
+      await addProductToCart(page, product.category, product.index);
+    }
 
     // Verify cart count
     const cartCount = await getCartCount(page);
@@ -178,7 +160,7 @@ test.describe('Use Case: Complete Purchase Flow', () => {
     await page.getByRole('link', { name: new RegExp(texts.cart.goToCheckout, 'i') }).click();
 
     // Complete purchase
-    await fillCheckoutForm(page, config.customerInfo);
+    await fillCheckoutForm(page, config.customer);
     await page.getByTestId(testIds.submitOrderButton).click();
 
     // Verify success
@@ -187,7 +169,7 @@ test.describe('Use Case: Complete Purchase Flow', () => {
 
   test('should allow returning to shop after successful purchase', async ({ page }) => {
     // Quick purchase
-    await addProductToCart(page, 'pixelparla', 0);
+    await addProductToCart(page, testCategories.pixelParla, 0);
     await goToCart(page);
     await page.getByRole('link', { name: new RegExp(texts.cart.goToCheckout, 'i') }).click();
     await fillCheckoutForm(page);

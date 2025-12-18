@@ -1,6 +1,7 @@
 import { test, expect } from './fixtures';
 import { testIds } from './tests';
 import { texts, paths } from '../src/app/content/texts';
+import { testCategories, invalidProductIds } from './test-data';
 import { 
   addProductToCart, 
   viewProductDetails, 
@@ -86,7 +87,7 @@ test.describe('Product Detail Page', () => {
 
   test('should maintain cart count when viewing products', async ({ page }) => {
     // Add product to cart
-    await addProductToCart(page, 'pixelparla', 0);
+    await addProductToCart(page, testCategories.pixelParla, 0);
     const initialCount = await getCartCount(page);
     
     // View another product
@@ -119,7 +120,7 @@ test.describe('Product Detail Page', () => {
   });
 
   test('should show product not found for invalid product', async ({ page }) => {
-    await page.goto(paths.productDetail('pixelparla', 'non-existent-product-id'));
+    await page.goto(paths.productDetail(testCategories.pixelParla, invalidProductIds.pixelParla));
     
     // Should show not found message
     await expect(page.getByText(texts.product.notFound)).toBeVisible();

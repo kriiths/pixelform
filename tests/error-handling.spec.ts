@@ -1,24 +1,25 @@
 import { test, expect } from './fixtures';
 import { testIds } from './tests';
 import { texts, paths } from '../src/app/content/texts';
+import { testCategories, invalidProductIds } from './test-data';
 
 test.describe('Error Handling', () => {
   test('should show 404 for non-existent product in pixelparla', async ({ page }) => {
-    await page.goto(paths.productDetail('pixelparla', 'non-existent-product-12345'));
+    await page.goto(paths.productDetail(testCategories.pixelParla, invalidProductIds.pixelParla));
     
     // Should show product not found message
     await expect(page.getByText(texts.product.notFound)).toBeVisible();
   });
 
   test('should show 404 for non-existent product in resin', async ({ page }) => {
-    await page.goto(paths.productDetail('resin', 'fake-product-xyz'));
+    await page.goto(paths.productDetail(testCategories.resin, invalidProductIds.resin));
     
     // Should show product not found message
     await expect(page.getByText(texts.product.notFound)).toBeVisible();
   });
 
   test('should show 404 for non-existent product in junior', async ({ page }) => {
-    await page.goto(paths.productDetail('junior', 'missing-item-abc'));
+    await page.goto(paths.productDetail(testCategories.junior, invalidProductIds.junior));
     
     // Should show product not found message
     await expect(page.getByText(texts.product.notFound)).toBeVisible();
@@ -70,7 +71,7 @@ test.describe('Error Handling', () => {
 
   test('should maintain site navigation when error occurs', async ({ page }) => {
     // Go to a non-existent product
-    await page.goto(paths.productDetail('pixelparla', 'non-existent-999'));
+    await page.goto(paths.productDetail(testCategories.pixelParla, invalidProductIds.generic));
     
     // Header navigation should still work (check for shop dropdown or direct link)
     const shopLink = page.getByRole('button', { name: texts.nav.shop });
@@ -87,7 +88,7 @@ test.describe('Error Handling', () => {
   });
 
   test('should provide link back to shop on error page', async ({ page }) => {
-    await page.goto(paths.productDetail('pixelparla', 'non-existent-product'));
+    await page.goto(paths.productDetail(testCategories.pixelParla, invalidProductIds.pixelParla));
     
     // Should have a link back to shop or continue shopping
     const shopLink = page.getByRole('link', { name: new RegExp(texts.cart.continueShopping, 'i') });

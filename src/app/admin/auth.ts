@@ -17,22 +17,22 @@ export function getAdminConfig() {
   return { ready: true as const, expectedHash: hashValue(adminPassword) };
 }
 
-export function isAdminAuthorized() {
+export async function isAdminAuthorized() {
   const config = getAdminConfig();
 
   if (!config.ready) {
     return { authorized: false, ready: false };
   }
 
-  const cookieValue = cookies().get(COOKIE_NAME)?.value || '';
+  const cookieValue = (await cookies()).get(COOKIE_NAME)?.value || '';
   return { authorized: cookieValue === config.expectedHash, ready: true };
 }
 
-export function setAdminCookie() {
+export async function setAdminCookie() {
   const config = getAdminConfig();
   if (!config.ready) return;
 
-  cookies().set(COOKIE_NAME, config.expectedHash, {
+  (await cookies()).set(COOKIE_NAME, config.expectedHash, {
     httpOnly: true,
     sameSite: 'lax',
     path: '/admin',
@@ -40,8 +40,8 @@ export function setAdminCookie() {
   });
 }
 
-export function clearAdminCookie() {
-  cookies().delete(COOKIE_NAME);
+export async function clearAdminCookie() {
+  (await cookies()).delete(COOKIE_NAME);
 }
 
 export function validatePassword(input: string) {

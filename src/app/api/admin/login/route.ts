@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     );
   }
 
-  setAdminCookie();
+  await setAdminCookie();
 
   return NextResponse.json({
     success: true,

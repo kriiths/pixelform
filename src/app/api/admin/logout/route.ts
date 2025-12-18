@@ -2,6 +2,6 @@ import { NextResponse } from 'next/server';
 import { clearAdminCookie } from '@/app/admin/auth';
 
 export async function POST() {
-  clearAdminCookie();
+  await clearAdminCookie();
   return NextResponse.json({ success: true });
 }

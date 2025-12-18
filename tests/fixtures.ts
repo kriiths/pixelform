@@ -2,6 +2,8 @@ import { test as base, Page } from '@playwright/test';
 import { paths } from '../src/app/content/texts';
 import { testIds } from './tests';
 
+/* eslint-disable react-hooks/rules-of-hooks */
+
 /**
  * Extended Playwright fixtures for common test scenarios
  * 
