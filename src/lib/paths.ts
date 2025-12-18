@@ -6,6 +6,7 @@ export const paths = {
   pixelParla: '/shop/pixelparla',
   resin: '/shop/resin',
   junior: '/shop/junior',
+  admin: '/admin',
   cart: '/cart',
   checkout: '/checkout',
   about: '/about',
