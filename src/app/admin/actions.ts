@@ -1,19 +1,22 @@
 'use server';
 
-import fs from 'fs';
-import path from 'path';
 import { revalidatePath } from 'next/cache';
 import type { Category } from '@/lib/types';
 import { isAdminAuthorized } from './auth';
+import {
+  saveProductMetadata,
+  saveProductImages,
+  productExists,
+  getNextImageIndex,
+  getProductMetadata,
+} from '@/lib/storage';
 
 type ActionResult = {
   success: boolean;
   message: string;
 };
 
-const PRODUCTS_DIR = path.join(process.cwd(), 'public', 'products');
 const ALLOWED_CATEGORIES: Category[] = ['pixelparla', 'resin', 'junior'];
-const ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
 
 const categoryLabels: Record<Category, string> = {
   pixelparla: 'Pixel & Pärla',
@@ -36,32 +39,6 @@ function slugify(value: string) {
     .replace(/[^a-z0-9-]/g, '')
     .replace(/-+/g, '-')
     .replace(/^-+|-+$/g, '');
-}
-
-async function saveImages(files: File[], imagesDir: string) {
-  if (!files.length) return 0;
-
-  const existingImages = (await fs.promises.readdir(imagesDir, { withFileTypes: true }))
-    .filter((file) => file.isFile() && ALLOWED_IMAGE_EXTENSIONS.includes(path.extname(file.name).toLowerCase()));
-
-  let nextIndex = existingImages.length + 1;
-  let savedCount = 0;
-
-  for (const file of files) {
-    const fileExt = path.extname(file.name).toLowerCase();
-    const safeExt = ALLOWED_IMAGE_EXTENSIONS.includes(fileExt) ? fileExt : '.jpg';
-    const paddedIndex = String(nextIndex).padStart(2, '0');
-    const fileName = `${paddedIndex}${safeExt}`;
-    const filePath = path.join(imagesDir, fileName);
-
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await fs.promises.writeFile(filePath, buffer);
-
-    nextIndex += 1;
-    savedCount += 1;
-  }
-
-  return savedCount;
 }
 
 function validateCategory(category: string): category is Category {
@@ -95,15 +72,21 @@ export async function createProductAction(formData: FormData): Promise<ActionRes
   }
 
   const stock = Number.isFinite(stockValue) ? Math.max(0, Math.floor(stockValue)) : 0;
-  const productDir = path.join(PRODUCTS_DIR, category, productId);
-  const imagesDir = path.join(productDir, 'images');
 
-  if (fs.existsSync(productDir)) {
+  // Check if product already exists
+  if (await productExists(category, productId)) {
     return { success: false, message: 'En produkt med samma ID finns redan i kategorin.' };
   }
 
-  await fs.promises.mkdir(imagesDir, { recursive: true });
+  // Prepare image files
+  const imageFiles = formData
+    .getAll('images')
+    .filter((file): file is File => file instanceof File && file.size > 0);
 
+  // Save images to storage (Blob in production, local in dev)
+  const imageUrls = await saveProductImages(category, productId, imageFiles, 1);
+
+  // Prepare product metadata
   const productInfo = {
     id: productId,
     name,
@@ -111,15 +94,11 @@ export async function createProductAction(formData: FormData): Promise<ActionRes
     price: formatPrice(price),
     stock,
     category,
+    images: imageUrls.length > 0 ? imageUrls : undefined,
   };
 
-  await fs.promises.writeFile(path.join(productDir, 'info.json'), JSON.stringify(productInfo, null, 2), 'utf-8');
-
-  const imageFiles = formData
-    .getAll('images')
-    .filter((file): file is File => file instanceof File && file.size > 0);
-
-  await saveImages(imageFiles, imagesDir);
+  // Save product metadata to storage
+  await saveProductMetadata(category, productId, productInfo);
 
   revalidatePath('/shop');
   revalidatePath(`/shop/${category}`);
@@ -146,15 +125,12 @@ export async function addProductImagesAction(formData: FormData): Promise<Action
     return { success: false, message: 'Ange produktens mappnamn (t.ex. pixel-heart-earring).' };
   }
 
-  const productDir = path.join(PRODUCTS_DIR, category, productId);
-  const imagesDir = path.join(productDir, 'images');
-
-  if (!fs.existsSync(productDir)) {
+  // Check if product exists
+  if (!(await productExists(category, productId))) {
     return { success: false, message: 'Produkten hittades inte. Kontrollera kategori och mappnamn.' };
   }
 
-  await fs.promises.mkdir(imagesDir, { recursive: true });
-
+  // Prepare image files
   const imageFiles = formData
     .getAll('extraImages')
     .filter((file): file is File => file instanceof File && file.size > 0);
@@ -163,11 +139,25 @@ export async function addProductImagesAction(formData: FormData): Promise<Action
     return { success: false, message: 'Välj minst en bild att ladda upp.' };
   }
 
-  const savedCount = await saveImages(imageFiles, imagesDir);
+  // Get the next image index
+  const nextIndex = await getNextImageIndex(category, productId);
+
+  // Save images to storage
+  const imageUrls = await saveProductImages(category, productId, imageFiles, nextIndex);
+
+  // Update product metadata with new images (important for production/Blob)
+  const metadata = await getProductMetadata(category, productId);
+  if (metadata) {
+    const allImages = [...(metadata.images || []), ...imageUrls];
+    await saveProductMetadata(category, productId, {
+      ...metadata,
+      images: allImages,
+    });
+  }
 
   revalidatePath('/shop');
   revalidatePath(`/shop/${category}`);
   revalidatePath(`/shop/${category}/${productId}`);
 
-  return { success: true, message: `${savedCount} bild(er) lades till för ${categoryLabels[category]}.` };
+  return { success: true, message: `${imageUrls.length} bild(er) lades till för ${categoryLabels[category]}.` };
 }
