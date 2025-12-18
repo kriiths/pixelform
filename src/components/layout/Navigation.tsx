@@ -38,6 +38,12 @@ export function DesktopNav({ totalItems }: DesktopNavProps) {
       <Link href={paths.about} className="text-gray-700 hover:text-black transition px-2 py-1 rounded">
         {texts.nav.about}
       </Link>
+      <Link
+        href={paths.admin}
+        className="text-gray-500 hover:text-black text-xs border border-gray-light px-2 py-1 rounded transition"
+      >
+        {texts.nav.admin}
+      </Link>
       <Link href={paths.cart} className="relative text-gray-700 hover:text-black transition px-2 py-1 rounded inline-block">
         <CartIcon className="inline w-6 h-6" />
         <CartBadge count={totalItems} testId={testIds.cartBadge} />
@@ -58,17 +64,20 @@ export function MobileNav({ totalItems, onClose }: MobileNavProps) {
         <Link href={paths.shop} onClick={onClose} className="text-gray-700 hover:text-black transition">
           {texts.nav.shop}
         </Link>
-        <Link href={paths.junior} onClick={onClose} className="text-pixel hover:text-pixel transition">
-          {texts.nav.junior}
-        </Link>
-        <Link href={paths.about} onClick={onClose} className="text-gray-700 hover:text-black transition">
-          {texts.nav.about}
-        </Link>
-        <Link href={paths.cart} onClick={onClose} className="text-gray-700 hover:text-black transition flex items-center gap-2">
-          <CartIcon className="inline w-6 h-6 mr-1 align-text-bottom" />
-          {texts.nav.cart}
-          <CartBadge count={totalItems} variant="mobile" />
-        </Link>
+      <Link href={paths.junior} onClick={onClose} className="text-pixel hover:text-pixel transition">
+        {texts.nav.junior}
+      </Link>
+      <Link href={paths.about} onClick={onClose} className="text-gray-700 hover:text-black transition">
+        {texts.nav.about}
+      </Link>
+      <Link href={paths.admin} onClick={onClose} className="text-gray-500 hover:text-black text-sm transition">
+        {texts.nav.admin}
+      </Link>
+      <Link href={paths.cart} onClick={onClose} className="text-gray-700 hover:text-black transition flex items-center gap-2">
+        <CartIcon className="inline w-6 h-6 mr-1 align-text-bottom" />
+        {texts.nav.cart}
+        <CartBadge count={totalItems} variant="mobile" />
+      </Link>
       </nav>
     </div>
   );
