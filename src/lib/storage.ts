@@ -10,7 +10,8 @@ import path from 'path';
  * - In development: uses local file system
  */
 
-const isProduction = process.env.NODE_ENV === 'production';
+// Check if we're running on Vercel (more reliable than NODE_ENV)
+const isVercel = !!process.env.VERCEL;
 const PRODUCTS_DIR = path.join(process.cwd(), 'public', 'products');
 
 export type ProductMetadata = {
@@ -31,7 +32,7 @@ export async function saveProductMetadata(
   productId: string,
   metadata: ProductMetadata
 ): Promise<void> {
-  if (isProduction) {
+  if (isVercel) {
     // In production, save to Vercel Blob
     const metadataKey = `products/${category}/${productId}/info.json`;
     await put(metadataKey, JSON.stringify(metadata, null, 2), {
@@ -63,7 +64,7 @@ export async function saveProductImages(
   const savedImages: string[] = [];
   let currentIndex = startIndex;
 
-  if (isProduction) {
+  if (isVercel) {
     // In production, upload to Vercel Blob
     for (const image of images) {
       const ext = path.extname(image.name).toLowerCase() || '.jpg';
@@ -108,7 +109,7 @@ export async function getProductMetadata(
   category: string,
   productId: string
 ): Promise<ProductMetadata | null> {
-  if (isProduction) {
+  if (isVercel) {
     // In production, fetch from Vercel Blob
     try {
       const { blobs } = await list({
@@ -155,7 +156,7 @@ export async function productExists(category: string, productId: string): Promis
  * Get the next image index for a product
  */
 export async function getNextImageIndex(category: string, productId: string): Promise<number> {
-  if (isProduction) {
+  if (isVercel) {
     // In production, query Blob storage for existing images
     try {
       const { blobs } = await list({

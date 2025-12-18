@@ -10,14 +10,17 @@ Felet du fick när du försökte ladda upp produkter på Vercel är nu fixat.
 2. **Skapat storage-lager** (`src/lib/storage.ts`) - Hanterar automatiskt skillnaden mellan lokal utveckling och produktion
 3. **Uppdaterat admin actions** - Använder nu Blob storage i produktion
 4. **Uppdaterat product loader** - Läser från både lokal lagring och Blob
+5. **Använder `process.env.VERCEL`** - Mer pålitlig detektion än `NODE_ENV` för att avgöra om vi kör på Vercel
 
 ## Hur fungerar det?
 
 ### Lokalt (utveckling)
+- `process.env.VERCEL` är inte satt
 - Produkter sparas i `public/products/` som vanligt
 - Allt fungerar precis som tidigare
 
 ### På Vercel (produktion)
+- `process.env.VERCEL` är automatiskt satt av Vercel
 - Produkter sparas till Vercel Blob Storage
 - Inga försök att skriva till read-only filsystem
 - Bilder får publika URLs från Blob

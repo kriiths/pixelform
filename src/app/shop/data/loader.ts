@@ -7,7 +7,8 @@ import type { Product } from '@/lib/types';
 import { texts } from '@/app/content/texts';
 
 const PRODUCTS_DIR = path.join(process.cwd(), 'public', 'products');
-const isProduction = process.env.NODE_ENV === 'production';
+// Check if we're running on Vercel (more reliable than NODE_ENV)
+const isVercel = !!process.env.VERCEL;
 
 // Error message constants
 const ERROR_MESSAGES = {
@@ -23,7 +24,7 @@ const ERROR_MESSAGES = {
  * Images are automatically detected from their respective storage
  */
 export async function loadProductsByCategory(category: string): Promise<Product[]> {
-  if (isProduction) {
+  if (isVercel) {
     return await loadProductsFromBlob(category);
   } else {
     return await loadProductsFromFileSystem(category);
@@ -190,7 +191,7 @@ export async function loadAllProducts() {
  * Optimized to load only the specific product instead of all products
  */
 export async function getProductById(category: string, productId: string): Promise<Product | null> {
-  if (isProduction) {
+  if (isVercel) {
     return await getProductByIdFromBlob(category, productId);
   } else {
     return await getProductByIdFromFileSystem(category, productId);
