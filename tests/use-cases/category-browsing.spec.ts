@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures';
 import { testIds } from '../tests';
 import { texts, paths } from '../../src/app/content/texts';
+import { testCategories, allCategories } from '../test-data';
 import {
   goToCategory,
   viewProductDetails,
@@ -13,28 +14,30 @@ import {
  * FULL CHAIN USE CASE 2: Category Browsing & Product Discovery
  * 
  * This test simulates a user exploring different categories and comparing products.
- * 
- * Configurable Options:
- * - categories: Which categories to browse (array of category names)
- * - compareProducts: Whether to compare multiple products
- * - addToWishlist: Simulate adding products to cart as "wishlist"
  */
 
-type BrowsingConfig = {
-  categories: Array<'pixelparla' | 'resin' | 'junior'>;
-  compareProducts: boolean;
-  minProductsPerCategory: number;
-};
-
-const defaultConfig: BrowsingConfig = {
-  categories: ['pixelparla', 'resin', 'junior'],
-  compareProducts: true,
-  minProductsPerCategory: 1,
+// Test configuration at top of file
+const testConfig = {
+  allCategories: {
+    categories: allCategories,
+    compareProducts: true,
+    minProductsPerCategory: 1,
+  },
+  compareProducts: {
+    products: [
+      { category: testCategories.pixelParla, index: 0 },
+      { category: testCategories.resin, index: 0 },
+    ],
+  },
+  exploreCategory: {
+    category: testCategories.pixelParla,
+    exploreCount: 3,
+  },
 };
 
 test.describe('Use Case: Category Browsing & Product Discovery', () => {
   test('should browse all categories from homepage', async ({ page }) => {
-    const config = defaultConfig;
+    const config = testConfig.allCategories;
 
     // STEP 1: Start from homepage and verify category cards
     await expect(page.getByTestId(testIds.heroTitle)).toBeVisible();
@@ -65,23 +68,23 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
     const productDetails: Array<{ name: string; category: string; price: string }> = [];
 
     // STEP 1: Browse pixelparla and collect product info
-    await goToCategory(page, 'pixelparla');
+    await goToCategory(page, testCategories.pixelParla);
     await viewProductDetails(page, 0);
     
     const pixelProduct = {
       name: await page.locator('h1').textContent() || '',
-      category: 'pixelparla',
+      category: testCategories.pixelParla,
       price: await page.locator('text=/\\d+ kr/').first().textContent() || '',
     };
     productDetails.push(pixelProduct);
 
     // STEP 2: Browse resin and collect product info
-    await goToCategory(page, 'resin');
+    await goToCategory(page, testCategories.resin);
     await viewProductDetails(page, 0);
     
     const resinProduct = {
       name: await page.locator('h1').textContent() || '',
-      category: 'resin',
+      category: testCategories.resin,
       price: await page.locator('text=/\\d+ kr/').first().textContent() || '',
     };
     productDetails.push(resinProduct);
@@ -126,9 +129,9 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
   test('should add products from multiple categories to cart while browsing', async ({ page }) => {
     const config = {
       productsToAdd: [
-        { category: 'pixelparla' as const, index: 0 },
-        { category: 'resin' as const, index: 0 },
-        { category: 'junior' as const, index: 0 },
+        { category: testCategories.pixelParla, index: 0 },
+        { category: testCategories.resin, index: 0 },
+        { category: testCategories.junior, index: 0 },
       ],
     };
 
@@ -162,7 +165,7 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
 
   test('should view product details and return to category', async ({ page }) => {
     // STEP 1: Navigate to a category
-    await goToCategory(page, 'pixelparla');
+    await goToCategory(page, testCategories.pixelParla);
 
     // STEP 2: View first product
     await viewProductDetails(page, 0);
@@ -173,7 +176,7 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
     await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
 
     // STEP 4: Navigate to category again
-    await goToCategory(page, 'pixelparla');
+    await goToCategory(page, testCategories.pixelParla);
     
     // STEP 5: View second product
     await viewProductDetails(page, 1);
@@ -195,16 +198,13 @@ test.describe('Use Case: Category Browsing & Product Discovery', () => {
     }
 
     // STEP 4: Browse different categories with different sort orders
-    await goToCategory(page, 'resin');
+    await goToCategory(page, testCategories.resin);
     const resinProducts = await getProductCount(page);
     expect(resinProducts).toBeGreaterThan(0);
   });
 
   test('should explore all products in a specific category', async ({ page }) => {
-    const config = {
-      category: 'pixelparla' as const,
-      exploreCount: 3, // How many products to view
-    };
+    const config = testConfig.exploreCategory;
 
     // STEP 1: Navigate to category
     await goToCategory(page, config.category);

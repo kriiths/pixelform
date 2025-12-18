@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures';
 import { testIds } from '../tests';
 import { texts, paths } from '../../src/app/content/texts';
+import { testCategories, testScenarios } from '../test-data';
 import {
   addProductToCart,
   goToCart,
@@ -21,42 +22,17 @@ import {
  * - Updating quantities
  * - Cart persistence across page refreshes
  * - Managing multiple items
- * 
- * Configurable Options:
- * - products: Array of products to add with their configurations
- * - testPersistence: Whether to test cart persistence
- * - sessionActions: List of actions to perform (add, remove, update)
  */
 
-type CartAction = 'add' | 'increase' | 'decrease' | 'remove';
-
-type CartConfig = {
-  products: Array<{
-    category: 'pixelparla' | 'resin' | 'junior';
-    index: number;
-    quantity: number;
-  }>;
-  actions: Array<{
-    type: CartAction;
-    itemIndex: number;
-    repeat?: number;
-  }>;
-};
-
-const defaultConfig: CartConfig = {
-  products: [
-    { category: 'pixelparla', index: 0, quantity: 2 },
-    { category: 'resin', index: 0, quantity: 1 },
-  ],
-  actions: [
-    { type: 'increase', itemIndex: 0, repeat: 1 },
-    { type: 'decrease', itemIndex: 1, repeat: 1 },
-  ],
+// Test configuration at top of file
+const testConfig = {
+  multiProduct: testScenarios.cartManagement.multiProduct,
+  complex: testScenarios.cartManagement.complex,
 };
 
 test.describe('Use Case: Cart Management & Session Persistence', () => {
   test('should manage cart with multiple products and quantity changes', async ({ page }) => {
-    const config = defaultConfig;
+    const config = testConfig.multiProduct;
 
     // STEP 1: Start with empty cart
     await clearCart(page);
@@ -84,22 +60,24 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
     expect(cartItems).toBeGreaterThanOrEqual(config.products.length);
 
     // STEP 5: Perform cart actions
-    for (const action of config.actions) {
-      const repeatCount = action.repeat || 1;
-      
-      for (let i = 0; i < repeatCount; i++) {
-        switch (action.type) {
-          case 'increase':
-            await increaseQuantity(page, action.itemIndex);
-            break;
-          case 'decrease':
-            await decreaseQuantity(page, action.itemIndex);
-            break;
-          case 'remove':
-            await removeFromCart(page, action.itemIndex);
-            break;
+    if (config.actions) {
+      for (const action of config.actions) {
+        const repeatCount = action.repeat || 1;
+        
+        for (let i = 0; i < repeatCount; i++) {
+          switch (action.type) {
+            case 'increase':
+              await increaseQuantity(page, action.itemIndex);
+              break;
+            case 'decrease':
+              await decreaseQuantity(page, action.itemIndex);
+              break;
+            case 'remove':
+              await removeFromCart(page, action.itemIndex);
+              break;
+          }
+          await waitForAnimation(page, 200);
         }
-        await waitForAnimation(page, 200);
       }
     }
 
@@ -109,8 +87,8 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
 
   test('should persist cart across page refresh and navigation', async ({ page }) => {
     // STEP 1: Add products to cart
-    await addProductToCart(page, 'pixelparla', 0);
-    await addProductToCart(page, 'resin', 0);
+    await addProductToCart(page, testCategories.pixelParla, 0);
+    await addProductToCart(page, testCategories.resin, 0);
     
     const initialCount = await getCartCount(page);
     expect(initialCount).toBe(2);
@@ -139,14 +117,7 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
   });
 
   test('should handle complex cart operations and maintain consistency', async ({ page }) => {
-    const config: CartConfig = {
-      products: [
-        { category: 'pixelparla', index: 0, quantity: 3 },
-        { category: 'resin', index: 0, quantity: 2 },
-        { category: 'junior', index: 0, quantity: 1 },
-      ],
-      actions: [],
-    };
+    const config = testConfig.complex;
 
     // STEP 1: Start with empty cart
     await clearCart(page);
@@ -191,9 +162,9 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
 
   test('should clear entire cart and verify empty state', async ({ page }) => {
     // STEP 1: Add multiple products
-    await addProductToCart(page, 'pixelparla', 0);
-    await addProductToCart(page, 'resin', 0);
-    await addProductToCart(page, 'junior', 0);
+    await addProductToCart(page, testCategories.pixelParla, 0);
+    await addProductToCart(page, testCategories.resin, 0);
+    await addProductToCart(page, testCategories.junior, 0);
 
     // STEP 2: Verify cart has items
     const initialCount = await getCartCount(page);
@@ -226,7 +197,7 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
     
     // STEP 1: Rapidly add products (use product with higher stock)
     for (let i = 0; i < 5; i++) {
-      await addProductToCart(page, 'pixelparla', 1); // Index 1 = mario-mushrooms-red (stock: 8)
+      await addProductToCart(page, testCategories.pixelParla, 1); // Index 1 = mario-mushrooms-red (stock: 8)
     }
 
     // STEP 2: Go to cart
@@ -249,7 +220,7 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
 
   test('should maintain cart state during shopping journey', async ({ page }) => {
     // STEP 1: Add first product
-    await addProductToCart(page, 'pixelparla', 0);
+    await addProductToCart(page, testCategories.pixelParla, 0);
     
     // STEP 2: Browse other categories (simulate window shopping)
     await page.goto(paths.resin);
@@ -259,7 +230,7 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
     await expect(page.getByTestId(testIds.productCard).first()).toBeVisible();
 
     // STEP 3: Add another product
-    await addProductToCart(page, 'resin', 0);
+    await addProductToCart(page, testCategories.resin, 0);
 
     // STEP 4: View product details without adding
     await page.goto(paths.junior);
@@ -267,7 +238,7 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
     // STEP 5: Go back and add third product
-    await addProductToCart(page, 'junior', 0);
+    await addProductToCart(page, testCategories.junior, 0);
 
     // STEP 6: Verify all products are in cart
     const finalCount = await getCartCount(page);
@@ -281,7 +252,7 @@ test.describe('Use Case: Cart Management & Session Persistence', () => {
 
   test('should update cart totals correctly after quantity changes', async ({ page }) => {
     // STEP 1: Add product to cart
-    await addProductToCart(page, 'pixelparla', 0);
+    await addProductToCart(page, testCategories.pixelParla, 0);
     await goToCart(page);
 
     // STEP 2: Get initial total
