@@ -8,7 +8,7 @@ import { texts } from '../content/texts';
 type ProductsByCategory = Record<Category, Product[]>;
 
 export default async function AdminPage() {
-  const { authorized, ready } = isAdminAuthorized();
+  const { authorized, ready } = await isAdminAuthorized();
   const { ready: configReady } = getAdminConfig();
 
   if (!configReady) {

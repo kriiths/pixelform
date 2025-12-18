@@ -69,7 +69,7 @@ function validateCategory(category: string): category is Category {
 }
 
 export async function createProductAction(formData: FormData): Promise<ActionResult> {
-  const { authorized } = isAdminAuthorized();
+  const { authorized } = await isAdminAuthorized();
   if (!authorized) {
     return { success: false, message: 'Obehörig begäran.' };
   }
@@ -129,7 +129,7 @@ export async function createProductAction(formData: FormData): Promise<ActionRes
 }
 
 export async function addProductImagesAction(formData: FormData): Promise<ActionResult> {
-  const { authorized } = isAdminAuthorized();
+  const { authorized } = await isAdminAuthorized();
   if (!authorized) {
     return { success: false, message: 'Obehörig begäran.' };
   }
