@@ -79,7 +79,10 @@ export default function AdminClient({ products }: Props) {
         message: success ? texts.admin.auth.success : texts.admin.auth.error,
       });
       if (success) {
-        window.location.reload();
+        // Navigate to home page to trigger server re-render and check authorization
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       }
     });
   };
